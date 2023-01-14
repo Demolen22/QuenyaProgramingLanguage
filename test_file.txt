@@ -1,0 +1,11 @@
+@FIRST PROGRAM IN QUENYA;
+iluve a1237 : 420;
+0; 034; @TEST 0 behaviour;
+(a1237)
+lav ~(a1237 >= 500) san esse
+tec
+lanca
+eldarissa esse
+tec
+lanca
+tema string_example: {a9_yare_0{a}}0- %az;(f(d)h@}
