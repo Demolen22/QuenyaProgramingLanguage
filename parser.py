@@ -29,7 +29,7 @@ class Parser:
 
     def p_block_body(self, p):
         '''
-        block_body : line
+        block_body : lines
                      | loop
                      | if_stat
                      | func_decl
@@ -59,13 +59,13 @@ class Parser:
 
     def p_loop(self, p):
         '''
-        loop : loop OPEN_BRACKET bool CLOSE_BRACKET block
+        loop : LOOP OPEN_BRACKET bool CLOSE_BRACKET block
         '''
         print('loop')
 
     def p_func_decl(self, p):
         '''
-        FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN block_body RETURN return_val
+        func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN block_body RETURN return_val
         '''
         print('func_decl')
     def p_return_val(self, p):
@@ -93,6 +93,7 @@ class Parser:
         value : NUMBER
                 | STRING_EXPR
                 | func_call
+                | expr
         '''
         print('value')
 
@@ -131,7 +132,7 @@ class Parser:
 
     def p_if_stat(self, p):
         '''
-        IF OPEN_BRACKET bool CLOSE_BRACKET THEN block_body end_if
+        if_stat : IF OPEN_BRACKET bool CLOSE_BRACKET THEN block_body end_if
         '''
         print('if_stat')
 
@@ -192,7 +193,7 @@ class Parser:
 
     def p_bool(self, p):
         '''
-        bool : bool bool_oper bool_fact_in
+        bool : bool bool_oper bool_fact_n
                | bool_fact_n
         '''
         print('bool')
@@ -212,7 +213,7 @@ class Parser:
 
     def p_bool_br(self, p):
         '''
-        bool_br : OPEN_BRACKET bool CLOSE_BRAC
+        bool_br : OPEN_BRACKET bool CLOSE_BRACKET
         '''
         print('bool_br')
 
@@ -230,3 +231,8 @@ class Parser:
                       | NOT bool_fact
         '''
         print('bool_fact_n')
+
+    def p_error(self, p):
+        '''
+        '''
+        print("ERROR")

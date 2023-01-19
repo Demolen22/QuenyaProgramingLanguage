@@ -57,7 +57,7 @@ class Lexer:
         'MULT',
         'PLUS',
         'MINUS',
-        'MOD',
+        # 'MOD',
         'OPEN_BRACKET',
         'CLOSE_BRACKET',
         'OPEN_CURL_BRACKET',
@@ -180,9 +180,9 @@ class Lexer:
         r'\/'
         return "DIV"
 
-    def t_MOD(self, t):
-        r'\%'
-        return "MOD"
+    # def t_MOD(self, t):
+    #     r'\%'
+    #     return "MOD"
 
     def t_AND(self, t):
         r'\&'
