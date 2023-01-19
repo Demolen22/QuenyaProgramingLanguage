@@ -21,7 +21,6 @@ class Parser:
         '''
         print("program")
 
-
     def p_block(self, p):
         '''
         block : BEGIN lines END

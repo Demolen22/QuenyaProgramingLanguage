@@ -79,21 +79,21 @@ class Lexer:
         print('Lexer destructor called.')
 
     def t_COMMENT(self, t):
-        r'\@.*\;' # czy z takiego czegos zrobic produkcje
-        print("COMMENT:", t.value)
+        r'\@.*\;'
 
     def t_STRING_EXPR(self, t):
         # r'\{[a-zA-Z0-9_\+\-\*\/\%\(\)\{\}\[\]\=\:\<\>\&\|\!\~\;\@\s]*\}'
         r'\{.*\}'
-        print("STRING_EXPR:", t.value[1:-1])
+        t.value = t.value[1:-1]
+        return t
 
     def t_ID(self, t):
         r'[a-zA-Z_][a-zA-Z0-9_]*'
-        t.type = self.reserved.get(t.value, 'ID')
-        if t.value in self.reserved.keys():
-            print("RESERVED:", t.type)
-        else:
-            print("ID:", t.value)
+        # t.type = self.reserved.get(t.value, 'ID')
+        # if t.value in self.reserved.keys():
+        #     print("RESERVED:", t.type)
+        # else:
+        #     print("ID:", t.value)
         return t
 
     def t_IF(self, t):
@@ -162,103 +162,99 @@ class Lexer:
 
     def t_NUMBER(self, t):
         r'[0]|([1-9][0-9]*)'
-        print("NUMBER:", t.value)
         t.value = int(t.value)
         return t
 
     def t_LESSER_EQ(self, t):
         r'\<='
-        print("LESSER_EQ")
+        return "LESSER_EQ"
 
     def t_GREATER_EQ(self, t):
         r'\>='
-        print("GREATER_EQ")
+        return "GREATER_EQ"
 
     def t_PLUS(self, t):
         r'\+'
-        print("PLUS")
+        return "PLUS"
 
     def t_MINUS(self, t):
         r'\-'
-        print("MINUS")
+        return "MINUS"
 
     def t_MULT(self, t):
         r'\*'
-        print("MULT")
+        return "MULT"
 
     def t_DIV(self, t):
         r'\/'
-        print("DIV")
+        return "DIV"
 
     def t_MOD(self, t):
         r'\%'
-        print("MOD")
+        return "MOD"
 
     def t_AND(self, t):
         r'\&'
-        print("AND")
+        return "AND"
 
     def t_OR(self, t):
         r'\|'
-        print("AND")
+        return "OR"
 
     def t_XOR(self, t):
         r'\!'
-        print("XOR")
+        return "XOR"
 
     def t_NOT(self, t):
         r'\~'
-        print("NOT")
+        return "NOT"
 
     def t_OPEN_BRACKET(self, t):
         r'\('
-        print("OPEN_BRACKET")
+        return t
 
     def t_CLOSE_BRACKET(self, t):
         r'\)'
-        print("CLOSE_BRACKET")
+        return t
 
     def t_OPEN_CURL_BRACKET(self, t):
         r'\)'
-        print("CLOSE_CURL_BRACKET")
+        return t
 
     def t_CLOSE_CURL_BRACKET(self, t):
         r'\)'
-        print("CLOSE_CURL_BRACKET")
+        return t
 
     def t_OPEN_SQ_BRACKET(self, t):
         r'\['
-        print("OPEN_SQ_BRACKET")
+        return t
 
     def t_CLOSE_SQ_BRACKET(self, t):
         r'\]'
-        print("CLOSE_SQ_BRACKET")
+        return t
 
     def t_ASSIGN(self, t):
         r'\:'
-        print("ASSIGN")
         return t
 
     def t_EQUAL(self, t):
         r'\='
-        print("EQUAL")
+        return "EQUAL"
 
     def t_LESSER(self, t):
         r'\<'
-        print("LESSER")
+        return "LESSER"
 
     def t_GREATER(self, t):
         r'\>'
-        print("GREATER")
+        return "GREATER"
 
     def t_ENDLINE(self, t):
         r'\;'
-        print("ENDLINE")
         return t
 
     def t_nl(self, t):
         r'(\n|\r|\r\n)|\s|\t'
-        # print("NL")
 
     def t_error(self, t):
         r'.'
