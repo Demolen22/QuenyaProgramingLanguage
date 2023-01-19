@@ -87,15 +87,6 @@ class Lexer:
         t.value = t.value[1:-1]
         return t
 
-    def t_ID(self, t):
-        r'[a-zA-Z_][a-zA-Z0-9_]*'
-        # t.type = self.reserved.get(t.value, 'ID')
-        # if t.value in self.reserved.keys():
-        #     print("RESERVED:", t.type)
-        # else:
-        #     print("ID:", t.value)
-        return t
-
     def t_IF(self, t):
         r'lav'
         return t
@@ -208,6 +199,15 @@ class Lexer:
     def t_NOT(self, t):
         r'\~'
         return "NOT"
+
+    def t_ID(self, t):
+        r'[a-zA-Z_][a-zA-Z0-9_]*'
+        # t.type = self.reserved.get(t.value, 'ID')
+        # if t.value in self.reserved.keys():
+        #     print("RESERVED:", t.type)
+        # else:
+        #     print("ID:", t.value)
+        return t
 
     def t_OPEN_BRACKET(self, t):
         r'\('
