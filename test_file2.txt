@@ -1,0 +1,4 @@
+talma esse
+iluve idik1 : 10;
+iluve idik2 : 12;
+lanca

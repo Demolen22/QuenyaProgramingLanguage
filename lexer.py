@@ -10,26 +10,45 @@ class Lexer:
         print('Lexer constructor called.')
         self.lexer = lex.lex(module=self)
         self.reserved = {
-            'lav': 'IF',
-            'san': 'THEN',
-            'eldarissa': 'ELSE',
-            'yare': 'LOOP',
-            'an': 'ITERABLE_LOOP',
-            'ahya': 'VARIABLE',
-            'iluve': 'INT',
-            'tema': 'STRING',
-            'tulca': 'FUNCTION',
-            'lusta': 'NULL',
-            'entulesse': 'RETURN',
-            'esse': 'BEGIN',
-            'lanca': 'END',
-            'tec': 'PRINT',
-            'hyalin': 'LIST'
+            r'lav': 'IF',
+            r'san': 'THEN',
+            r'eldarissa': 'ELSE',
+            r'yare': 'LOOP',
+            r'an': 'ITERABLE_LOOP',
+            r'ahya': 'VARIABLE',
+            r'iluve': 'INT',
+            r'tema': 'STRING',
+            r'tulca': 'FUNCTION',
+            r'lusta': 'NULL',
+            r'entulesse': 'RETURN',
+            r'esse': 'BEGIN',
+            r'lanca': 'END',
+            r'tec': 'PRINT',
+            r'hyalin': 'LIST',
+            r'talma': 'PROGRAM'
         }
 
     tokens = [
         'COMMENT',
         'STRING_EXPR',
+
+        'IF',
+        'THEN',
+        'ELSE',
+        'LOOP',
+        'ITERABLE_LOOP',
+        'VARIABLE',
+        'INT',
+        'STRING',
+        'FUNCTION',
+        'NULL',
+        'RETURN',
+        'BEGIN',
+        'END',
+        'PRINT',
+        'LIST',
+        'PROGRAM',
+
         'ID',
         'NUMBER',
         'LESSER_EQ',
@@ -38,7 +57,7 @@ class Lexer:
         'MULT',
         'PLUS',
         'MINUS',
-        'MOD'
+        'MOD',
         'OPEN_BRACKET',
         'CLOSE_BRACKET',
         'OPEN_CURL_BRACKET',
@@ -52,10 +71,8 @@ class Lexer:
         'AND',
         'OR',
         'XOR',
-        'NOT'
-        'ENDLINE',
-        'error'
-
+        'NOT',
+        'ENDLINE'
     ]
 
     def __del__(self):
@@ -77,14 +94,77 @@ class Lexer:
             print("RESERVED:", t.type)
         else:
             print("ID:", t.value)
+        return t
 
-    # def t_INV_NUM_ERROR(self, t): #czy mozna tak robic czy trzeba tak definiowac zeby byl jeden error na koncu jak nie pasuje do niczego
-    #     r'[0].*'
-    #     print("INVALID_NUMBER_ERROR:", t.value)
+    def t_IF(self, t):
+        r'lav'
+        return t
 
-    def t_NUMBER(self, t): # czy to definiowac na etapie tokenow (to z 0) czy parsingu
-        r'[0]|([1-9][0-9]*)' # w jaki sposob mozna sie odwolywac do innych tokenow w definicji? np do t_OPEN_BRACKET
+    def t_THEN(self, t):
+        r'san'
+        return t
+
+    def t_ELSE(self, t):
+        r'eldarissa'
+        return t
+
+    def t_LOOP(self, t):
+        r'yare'
+        return t
+
+    def t_ITERABLE_LOOP(self, t):
+        r'an'
+        return t
+
+    def t_VARIABLE(self, t):
+        r'ahya'
+        return t
+
+    def t_INT(self, t):
+        r'iluve'
+        return t
+
+    def t_STRING(self, t):
+        r'tema'
+        return t
+
+    def t_FUNCTION(self, t):
+        r'tulca'
+        return t
+
+    def t_NULL(self, t):
+        r'lusta'
+        return t
+
+    def t_RETURN(self, t):
+        r'entulesse'
+        return t
+
+    def t_BEGIN(self, t):
+        r'esse'
+        return t
+
+    def t_END(self, t):
+        r'lanca'
+        return t
+
+    def t_PRINT(self, t):
+        r'tec'
+        return t
+
+    def t_LIST(self, t):
+        r'hyalin'
+        return t
+
+    def t_PROGRAM(self, t):
+        r'talma'
+        return t
+
+    def t_NUMBER(self, t):
+        r'[0]|([1-9][0-9]*)'
         print("NUMBER:", t.value)
+        t.value = int(t.value)
+        return t
 
     def t_LESSER_EQ(self, t):
         r'\<='
@@ -157,6 +237,7 @@ class Lexer:
     def t_ASSIGN(self, t):
         r'\:'
         print("ASSIGN")
+        return t
 
     def t_EQUAL(self, t):
         r'\='
@@ -173,6 +254,7 @@ class Lexer:
     def t_ENDLINE(self, t):
         r'\;'
         print("ENDLINE")
+        return t
 
     def t_nl(self, t):
         r'(\n|\r|\r\n)|\s|\t'
