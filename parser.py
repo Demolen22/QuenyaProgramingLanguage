@@ -48,24 +48,28 @@ class Parser:
         '''
         block : BEGIN block_body END
         '''
-        p[0] = p[2]
-        print(p[0])
-        print("block", end="\n\n")
+        p[0] = dict()
+        if type(p[2]) == list:
+            self._fill_event_list(p[2], p[0])
+        print(f"block {p[0]}", end="\n\n")
+
+    def _fill_event_list(self, event_list, scope_dict):
+        for event in event_list:
+            if event is not None:
+                if type(event) == list:
+                    self._fill_event_list(event, scope_dict)
+                elif event["operation"] == "add_new_var":
+                    scope_dict[event["id"]] = {"type":event["type"], "value":event["value"]}
+                elif event["operation"] == "update":
+                    scope_dict[event["id"]]["value"] = event["value"]
 
     def p_block_body(self, p):
         '''
         block_body : lines
                      | loop
-                     | if_stat
                      | func_decl
         '''
-        p[0] = dict()
-        if type(p[1]) == list:
-            for event in p[1]:
-                if event["operation"] == "add_new_var":
-                    p[0][event["id"]] = {"type":event["type"], "value":event["value"]}
-                elif event["operation"] == "update":
-                    p[0][event["id"]]["value"] = event["value"]
+        p[0] = p[1]
         print(f'block_body {p[0]}', end="\n\n")
 
     def p_lines(self, p):
@@ -92,16 +96,26 @@ class Parser:
         '''
         line : var_decl
                 | var_assign
+                | if_stat
                 | comment
+                | print
         '''
         p[0] = p[1]
         print(f'line {p[0]}', end="\n\n")
 
     def p_loop(self, p):
         '''
-        loop : LOOP OPEN_BRACKET expr CLOSE_BRACKET block
+        loop : LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN block_body END
         '''
+
         print('loop', end="\n\n")
+
+    def p_print(self, p):
+        '''
+        print : PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+        '''
+        print("OUTPUT:",p[3])
+        p[0] = {"operation":None}
 
     def p_func_decl(self, p):
         '''
@@ -119,14 +133,14 @@ class Parser:
 
     def p_var_decl(self, p):
         '''
-        var_decl : type ID ASSIGN factor ENDLINE
+        var_decl : type ID ASSIGN factor_n ENDLINE
         '''
         p[0] = {"type":self.reserved[p[1]], "id":p[2], "value":p[4], "operation":"add_new_var"}
         print(f'var_decl {p[0]}', end="\n\n")
 
     def p_var_assign(self, p):
         '''
-        var_assign : ID ASSIGN factor ENDLINE
+        var_assign : ID ASSIGN factor_n ENDLINE
         '''
         p[0] = {"operation":"update", "id":p[1], "value":p[3]}
         print(f'var_assign {p[0]}', end="\n\n")
@@ -163,24 +177,26 @@ class Parser:
         '''
         if_stat : IF OPEN_BRACKET expr CLOSE_BRACKET THEN block_body end_if
         '''
-        if p[3]:
+        if p[3] > 0:
             p[0] = p[6]
-            if len(p) == 8:
-                p[0] = p[7]
-        print('if_stat', end="\n\n")
+        elif p[7] is not None:
+            p[0] = p[7]
+        print(f'if_stat {p[0]}', end="\n\n")
 
     def p_end_if(self, p):
         '''
         end_if : END
                  | else_stat
         '''
+        p[0] = p[1]
         print('end_if', end="\n\n")
 
     def p_else_stat(self, p):
         '''
         else_stat : ELSE THEN block_body END
         '''
-        print('else_stat', end="\n\n")
+        p[0] = p[3]
+        print(f'else_stat {p[0]}', end="\n\n")
 
     def p_expr(self, p):
         '''
