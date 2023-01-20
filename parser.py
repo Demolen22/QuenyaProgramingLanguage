@@ -278,6 +278,30 @@ class Parser:
             else:
                 p[0] = p[1] / p[3]
                 print(p[0])
+        elif p[2] == '%':
+            if p[3] == 0:
+                print('Cannot divide by 0')
+                raise ZeroDivisionError
+            else:
+                p[0] = p[1] % p[3]
+        elif p[2] == '<=':
+            p[0] = int(p[1] <= p[3])
+        elif p[2] == '>=':
+            p[0] = int(p[1] >= p[3])
+        elif p[2] == '<':
+            p[0] = int(p[1] < p[3])
+        elif p[2] == '>':
+            p[0] = int(p[1] > p[3])
+        elif p[2] == '=':
+            p[0] = int(p[1] == p[3])
+        elif p[2] == '~=':
+            p[0] = int(p[1] != p[3])
+        elif p[2] == '&':
+            p[0] = int(p[1] and p[3])
+        elif p[2] == '|':
+            p[0] = int(p[1] or p[3])
+        elif p[2] == '!':
+            p[0] = int((p[1] and (not p[3])) or ((not p[1]) and p[3]))
         print('comp')
 
     def p_error(self, p):

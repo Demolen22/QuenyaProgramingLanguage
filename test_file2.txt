@@ -1,5 +1,5 @@
 talma esse
 iluve idik1 : (18-10*15+4);
 idik1 : 12;
-iluve idik2 : 100;
+iluve idik2 : (0 ! 1);
 lanca
