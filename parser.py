@@ -59,7 +59,7 @@ class Parser:
 
     def p_loop(self, p):
         '''
-        loop : LOOP OPEN_BRACKET bool CLOSE_BRACKET block
+        loop : LOOP OPEN_BRACKET expr CLOSE_BRACKET block
         '''
         print('loop')
 
@@ -71,7 +71,7 @@ class Parser:
     def p_return_val(self, p):
         '''
         return_val : ID
-                     | bool
+                     | expr
                      | func_call
         '''
         print('return_val')
@@ -132,7 +132,7 @@ class Parser:
 
     def p_if_stat(self, p):
         '''
-        if_stat : IF OPEN_BRACKET bool CLOSE_BRACKET THEN block_body end_if
+        if_stat : IF OPEN_BRACKET expr CLOSE_BRACKET THEN block_body end_if
         '''
         print('if_stat')
 
@@ -173,6 +173,15 @@ class Parser:
         '''
         oper_mult : MULT
                     | DIV
+                    | MOD
+                    | AND
+                    | OR
+                    | XOR
+                    | LESSER
+                    | GREATER
+                    | EQUAL
+                    | LESSER_EQ
+                    | GREATER_EQ
         '''
         print('oper_mult')
 
@@ -182,55 +191,20 @@ class Parser:
                  | NUMBER
                  | brac_expr
         '''
-        print('factor')
+        print('factor', p[1])
+
+    def p_factor_n(self, p):
+        '''
+        factor_n : NOT factor
+                    | factor
+        '''
 
     def p_comp(self, p):
         '''
-        comp : comp oper_mult factor
-               | factor
+        comp : comp oper_mult factor_n
+               | factor_n
         '''
         print('comp')
-
-    def p_bool(self, p):
-        '''
-        bool : bool bool_oper bool_fact_n
-               | bool_fact_n
-        '''
-        print('bool')
-
-    def p_bool_oper(self, p):
-        '''
-        bool_oper : AND
-                    | OR
-                    | XOR
-                    | LESSER
-                    | GREATER
-                    | EQUAL
-                    | LESSER_EQ
-                    | GREATER_EQ
-        '''
-        print('bool_oper')
-
-    def p_bool_br(self, p):
-        '''
-        bool_br : OPEN_BRACKET bool CLOSE_BRACKET
-        '''
-        print('bool_br')
-
-    def p_bool_fact(self, p):
-        '''
-        bool_fact : bool_br
-                    | ID
-                    | NUMBER
-        '''
-        print('bool_fact')
-
-    def p_bool_fact_n(self, p):
-        '''
-        bool_fact_n : bool_fact
-                      | NOT bool_fact
-        '''
-        print('bool_fact_n')
 
     def p_error(self, p):
         '''

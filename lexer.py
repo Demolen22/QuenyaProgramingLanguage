@@ -15,7 +15,6 @@ class Lexer:
             r'eldarissa': 'ELSE',
             r'yare': 'LOOP',
             r'an': 'ITERABLE_LOOP',
-            r'ahya': 'VARIABLE',
             r'iluve': 'INT',
             r'tema': 'STRING',
             r'tulca': 'FUNCTION',
@@ -37,7 +36,6 @@ class Lexer:
         'ELSE',
         'LOOP',
         'ITERABLE_LOOP',
-        'VARIABLE',
         'INT',
         'STRING',
         'FUNCTION',
@@ -57,7 +55,7 @@ class Lexer:
         'MULT',
         'PLUS',
         'MINUS',
-        # 'MOD',
+        'MOD',
         'OPEN_BRACKET',
         'CLOSE_BRACKET',
         'OPEN_CURL_BRACKET',
@@ -65,6 +63,7 @@ class Lexer:
         'OPEN_SQ_BRACKET',
         'CLOSE_SQ_BRACKET',
         'EQUAL',
+        'N_EQUAL',
         'ASSIGN',
         'LESSER',
         'GREATER',
@@ -105,10 +104,6 @@ class Lexer:
 
     def t_ITERABLE_LOOP(self, t):
         r'an'
-        return t
-
-    def t_VARIABLE(self, t):
-        r'ahya'
         return t
 
     def t_INT(self, t):
@@ -180,9 +175,9 @@ class Lexer:
         r'\/'
         return t
 
-    # def t_MOD(self, t):
-    #     r'\%'
-    #     return "MOD"
+    def t_MOD(self, t):
+        r'\%'
+        return t
 
     def t_AND(self, t):
         r'\&'
@@ -239,6 +234,10 @@ class Lexer:
 
     def t_EQUAL(self, t):
         r'\='
+        return t
+
+    def t_N_EQUAL(self, t):
+        r'\~='
         return t
 
     def t_LESSER(self, t):
