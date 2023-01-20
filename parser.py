@@ -8,9 +8,27 @@ class Parser:
         print("Parser constructor called")
         self.parser = yacc.yacc(module=self)
         self.lexer = lexer
+        self.reserved = {
+            r'lav': 'IF',
+            r'san': 'THEN',
+            r'eldarissa': 'ELSE',
+            r'yare': 'LOOP',
+            r'an': 'ITERABLE_LOOP',
+            r'iluve': 'INT',
+            r'tema': 'STRING',
+            r'tulca': 'FUNCTION',
+            r'lusta': 'NULL',
+            r'entulesse': 'RETURN',
+            r'esse': 'BEGIN',
+            r'lanca': 'END',
+            r'tec': 'PRINT',
+            r'hyalin': 'LIST',
+            r'talma': 'PROGRAM'
+        }
 
     def __del__(self):
         print('Parser destructor called.')
+
 
     tokens = Lexer.tokens
 
@@ -20,6 +38,11 @@ class Parser:
         program_decl : PROGRAM block
         '''
         print("program", end="\n\n")
+
+    def p_comment(self, p):
+        '''
+        comment : COMMENT
+        '''
 
     def p_block(self, p):
         '''
@@ -36,34 +59,43 @@ class Parser:
                      | if_stat
                      | func_decl
         '''
-        p[0] = p[1]
-        print(p[0])
-        print('block_body', end="\n\n")
+        p[0] = dict()
+        if type(p[1]) == list:
+            for event in p[1]:
+                if event["operation"] == "add_new_var":
+                    p[0][event["id"]] = {"type":event["type"], "value":event["value"]}
+                elif event["operation"] == "update":
+                    p[0][event["id"]]["value"] = event["value"]
+        print(f'block_body {p[0]}', end="\n\n")
 
     def p_lines(self, p):
         '''
         lines : lines line
                 | line
         '''
-        print('p_lines', end="\n\n")
+        print(p[0])
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1]+[p[2]]
+        print(f'p_lines {p[0]}', end="\n\n")
+
+    # def p_line(self, p):
+    #     '''
+    #     line : line_body
+    #     '''
+    #     p[0] = p[1]
+    #     print(p[0])
+    #     print('p_line', end="\n\n")
 
     def p_line(self, p):
         '''
-        line : line_body ENDLINE
+        line : var_decl
+                | var_assign
+                | comment
         '''
         p[0] = p[1]
-        print(p[0])
-        print('p_line', end="\n\n")
-
-    def p_line_body(self, p):
-        '''
-        line_body : var_decl
-                    | func_call
-                    | var_assign
-        '''
-        p[0] = p[1]
-        print(p[0])
-        print('line_body', end="\n\n")
+        print(f'line {p[0]}', end="\n\n")
 
     def p_loop(self, p):
         '''
@@ -76,6 +108,7 @@ class Parser:
         func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN block_body RETURN return_val
         '''
         print('func_decl', end="\n\n")
+
     def p_return_val(self, p):
         '''
         return_val : ID
@@ -86,37 +119,17 @@ class Parser:
 
     def p_var_decl(self, p):
         '''
-        var_decl : type ID ASSIGN value
+        var_decl : type ID ASSIGN factor ENDLINE
         '''
-        p[0] = p[4]
-        print(p[0])
-        print('var_decl', end="\n\n")
+        p[0] = {"type":self.reserved[p[1]], "id":p[2], "value":p[4], "operation":"add_new_var"}
+        print(f'var_decl {p[0]}', end="\n\n")
 
     def p_var_assign(self, p):
         '''
-        var_assign : ID ASSIGN value
+        var_assign : ID ASSIGN factor ENDLINE
         '''
-        p[0] = p[3]
-        print(p[0])
-        print('var_assign', end="\n\n")
-
-    def p_value(self, p):
-        '''
-        value : NUMBER
-                | STRING_EXPR
-                | func_call
-                | expr
-        '''
-        p[0] = p[1]
-        print(p[0])
-        print('value', end="\n\n")
-
-    def p_values(self, p):
-        '''
-        values : values value
-                 | value
-        '''
-        print('value', end="\n\n")
+        p[0] = {"operation":"update", "id":p[1], "value":p[3]}
+        print(f'var_assign {p[0]}', end="\n\n")
 
     def p_type(self, p):
         '''
@@ -129,7 +142,7 @@ class Parser:
 
     def p_func_call(self, p):
         '''
-        func_call : ID OPEN_BRACKET values CLOSE_BRACKET
+        func_call : ID OPEN_BRACKET factors_n CLOSE_BRACKET
         '''
         print('func_call', end="\n\n")
 
@@ -223,6 +236,7 @@ class Parser:
         factor : ID
                  | NUMBER
                  | brac_expr
+                 | func_call
         '''
         p[0] = p[1]
         print(p[0])
@@ -239,6 +253,12 @@ class Parser:
             p[0] = int(not p[2])
         print(p[0])
         print('p_factor_n', end="\n\n")
+
+    def p_factors_n(self, p):
+        '''
+        factors_n : factor_n
+                | factors_n factor_n
+        '''
 
     def p_comp(self, p):
         '''
@@ -263,4 +283,4 @@ class Parser:
     def p_error(self, p):
         '''
         '''
-        print("ERROR")
+        print("ERROR", p)

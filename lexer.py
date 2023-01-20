@@ -79,6 +79,7 @@ class Lexer:
 
     def t_COMMENT(self, t):
         r'\@.*\;'
+        return t
 
     def t_STRING_EXPR(self, t):
         # r'\{[a-zA-Z0-9_\+\-\*\/\%\(\)\{\}\[\]\=\:\<\>\&\|\!\~\;\@\s]*\}'
