@@ -158,27 +158,27 @@ class Lexer:
 
     def t_LESSER_EQ(self, t):
         r'\<='
-        return "LESSER_EQ"
+        return t
 
     def t_GREATER_EQ(self, t):
         r'\>='
-        return "GREATER_EQ"
+        return t
 
     def t_PLUS(self, t):
         r'\+'
-        return "PLUS"
+        return t
 
     def t_MINUS(self, t):
         r'\-'
-        return "MINUS"
+        return t
 
     def t_MULT(self, t):
         r'\*'
-        return "MULT"
+        return t
 
     def t_DIV(self, t):
         r'\/'
-        return "DIV"
+        return t
 
     # def t_MOD(self, t):
     #     r'\%'
@@ -186,19 +186,19 @@ class Lexer:
 
     def t_AND(self, t):
         r'\&'
-        return "AND"
+        return t
 
     def t_OR(self, t):
         r'\|'
-        return "OR"
+        return t
 
     def t_XOR(self, t):
         r'\!'
-        return "XOR"
+        return t
 
     def t_NOT(self, t):
         r'\~'
-        return "NOT"
+        return t
 
     def t_ID(self, t):
         r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -239,15 +239,15 @@ class Lexer:
 
     def t_EQUAL(self, t):
         r'\='
-        return "EQUAL"
+        return t
 
     def t_LESSER(self, t):
         r'\<'
-        return "LESSER"
+        return t
 
     def t_GREATER(self, t):
         r'\>'
-        return "GREATER"
+        return t
 
     def t_ENDLINE(self, t):
         r'\;'
