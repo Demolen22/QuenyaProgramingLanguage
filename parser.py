@@ -195,6 +195,7 @@ class Parser:
                     | EQUAL
                     | LESSER_EQ
                     | GREATER_EQ
+                    | N_EQUAL
         '''
         p[0] = p[1]
         print('oper_mult', end="\n\n")
@@ -217,7 +218,7 @@ class Parser:
         if len(p) == 2:
             p[0] = p[1]
         elif len(p) == 3:
-            p[0] = not p[2]
+            p[0] = int(not p[2])
         print(p[0])
         print('p_factor_n', end="\n\n")
 
