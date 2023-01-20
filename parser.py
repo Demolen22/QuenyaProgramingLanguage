@@ -25,6 +25,8 @@ class Parser:
         '''
         block : BEGIN block_body END
         '''
+        p[0] = p[2]
+        print(p[0])
         print("block", end="\n\n")
 
     def p_block_body(self, p):
@@ -34,6 +36,8 @@ class Parser:
                      | if_stat
                      | func_decl
         '''
+        p[0] = p[1]
+        print(p[0])
         print('block_body', end="\n\n")
 
     def p_lines(self, p):
@@ -47,6 +51,8 @@ class Parser:
         '''
         line : line_body ENDLINE
         '''
+        p[0] = p[1]
+        print(p[0])
         print('p_line', end="\n\n")
 
     def p_line_body(self, p):
@@ -55,6 +61,8 @@ class Parser:
                     | func_call
                     | var_assign
         '''
+        p[0] = p[1]
+        print(p[0])
         print('line_body', end="\n\n")
 
     def p_loop(self, p):
@@ -80,12 +88,16 @@ class Parser:
         '''
         var_decl : type ID ASSIGN value
         '''
+        p[0] = p[4]
+        print(p[0])
         print('var_decl', end="\n\n")
 
     def p_var_assign(self, p):
         '''
         var_assign : ID ASSIGN value
         '''
+        p[0] = p[3]
+        print(p[0])
         print('var_assign', end="\n\n")
 
     def p_value(self, p):
@@ -95,6 +107,8 @@ class Parser:
                 | func_call
                 | expr
         '''
+        p[0] = p[1]
+        print(p[0])
         print('value', end="\n\n")
 
     def p_values(self, p):
@@ -136,6 +150,10 @@ class Parser:
         '''
         if_stat : IF OPEN_BRACKET expr CLOSE_BRACKET THEN block_body end_if
         '''
+        if p[3]:
+            p[0] = p[6]
+            if len(p) == 8:
+                p[0] = p[7]
         print('if_stat', end="\n\n")
 
     def p_end_if(self, p):
