@@ -1,5 +1,6 @@
 from lexer import Lexer
 import ply.yacc as yacc
+from copy import deepcopy
 import sys
 
 
@@ -26,25 +27,24 @@ class Parser:
             r'talma': 'PROGRAM'
         }
         self.operations = {
-            '-':lambda x, y: x - y,
-            '+':lambda x, y: x + y,
-            '*':lambda x, y: x * y,
-            '/':lambda x, y: x / y,
-            '%':lambda x, y: x % y,
-            '<=':lambda x, y: int(x <= y),
-            '>=':lambda x, y: int(x >= y),
-            '<':lambda x, y: int(x < y),
-            '>':lambda x, y: int(x > y),
-            '=':lambda x, y: int(x == y),
-            '~=':lambda x, y: int(x != y),
-            '&':lambda x, y: int(x and y),
-            '|':lambda x, y: int(x or y),
-            '!':lambda x, y: int((x and (not y)) or ((not x) and y))
+            '-': lambda x, y: x - y,
+            '+': lambda x, y: x + y,
+            '*': lambda x, y: x * y,
+            '/': lambda x, y: x / y,
+            '%': lambda x, y: x % y,
+            '<=': lambda x, y: int(x <= y),
+            '>=': lambda x, y: int(x >= y),
+            '<': lambda x, y: int(x < y),
+            '>': lambda x, y: int(x > y),
+            '=': lambda x, y: int(x == y),
+            '~=': lambda x, y: int(x != y),
+            '&': lambda x, y: int(x and y),
+            '|': lambda x, y: int(x or y),
+            '!': lambda x, y: int((x and (not y)) or ((not x) and y))
         }
 
     def __del__(self):
         print('Parser destructor called.')
-
 
     tokens = Lexer.tokens
 
@@ -69,6 +69,31 @@ class Parser:
             self._fill_event_list(p[2], p[0])
         print(f"block {p[0]}", end="\n\n")
 
+    def _save_func_declaration(self, function, scope_dict):
+        scope_dict[function["id"]] = {
+            "type": "function",
+            "args": function["args"],
+            "body": function["value"],
+            "return": function["return"]
+        }
+        print("scope dict", scope_dict)
+    def _call_function(self, id, args, scope_dict):
+        func_decl = scope_dict[id]
+        if len(func_decl["args"]) != len(args):
+            raise Exception(f'numer of arguments is {len(args)} and should be {len(func_decl["args"])}')
+        for idx, arg in enumerate(args):
+            func_decl["args"][idx]["value"] = arg
+        local_scope_dict = deepcopy(scope_dict)
+        for variable in scope_dict.values():
+            if variable["type"] == "function":
+                for func_var in variable["args"]:
+                    local_scope_dict[func_var["id"]] = func_var
+        print(f'local scope dict {local_scope_dict}')
+        print(f'func {id} called with args {func_decl["args"]} scope dict is {local_scope_dict}')
+        self._fill_event_list(func_decl["body"], local_scope_dict)
+        print(f'And got {local_scope_dict[func_decl["return"]]["value"]}')
+        return local_scope_dict[func_decl["return"]]["value"]
+
     def _fill_event_list(self, event_list, scope_dict):
         for event in event_list:
             if event is not None:
@@ -90,6 +115,8 @@ class Parser:
                         scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
                     elif scope_dict[event["id"]]["type"] == "STRING":
                         scope_dict[event["id"]]["value"] = event["value"]
+                elif event["operation"] == "add_new_func":
+                    self._save_func_declaration(event, scope_dict)
                 elif event["operation"] == "if_stat":
                     if self._arithmetic_interpreter(event["cond"], scope_dict) != 0:
                         self._fill_event_list(event["if_lines"], scope_dict)
@@ -97,6 +124,8 @@ class Parser:
                         self._fill_event_list(event["else_lines"], scope_dict)
                 elif event["operation"] == "print":
                     print(f"OUTPUT: {self._arithmetic_interpreter(event['value'], scope_dict)}")
+        print("scope dict ", scope_dict)
+
 
     def _arithmetic_interpreter(self, value, scope_dict):
         if type(value) == list:
@@ -117,6 +146,9 @@ class Parser:
         elif type(value) == dict:
             if value["operation"] == "~":
                 return int(not self._arithmetic_interpreter(value["value"], scope_dict))
+            elif value["operation"] == "func_call":
+                print(self._call_function(value["id"], value["args"], scope_dict))
+                return self._call_function(value["id"], value["args"], scope_dict)
             else:
                 return self._arithmetic_interpreter(value["value"], scope_dict)
         elif type(value) == str:
@@ -135,12 +167,11 @@ class Parser:
         lines : lines line
                 | line
         '''
-        print(p[0])
         if len(p) == 2:
             p[0] = [p[1]]
         else:
-            p[0] = p[1]+[p[2]]
-        print(f'lines {p[0]}', end="\n\n")
+            p[0] = p[1] + [p[2]]
+        print(f'p_lines {p[0]}', end="\n\n")
 
     def p_line(self, p):
         '''
@@ -172,6 +203,13 @@ class Parser:
         '''
         func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
         '''
+        p[0] = dict()
+        p[0]["id"] = p[2]
+        p[0]["args"] = p[4]
+        p[0]["value"] = p[7]
+        p[0]["return"] = p[9]
+        p[0]["operation"] = "add_new_func"
+        p[0]["type"] = "function"
         print('func_decl', end="\n\n")
 
     def p_var_decl(self, p):
@@ -179,7 +217,7 @@ class Parser:
         var_decl : INT ID ASSIGN factor_n ENDLINE
                 | STRING ID ASSIGN STRING_EXPR ENDLINE
         '''
-        p[0] = {"type":self.reserved[p[1]], "id":p[2], "value":p[4], "operation":"add_new_var"}
+        p[0] = {"type": self.reserved[p[1]], "id": p[2], "value": p[4], "operation": "add_new_var"}
         print(f'var_decl {p[0]}', end="\n\n")
 
     def p_var_assign(self, p):
@@ -187,7 +225,7 @@ class Parser:
         var_assign : ID ASSIGN factor_n ENDLINE
                     | ID ASSIGN STRING_EXPR ENDLINE
         '''
-        p[0] = {"operation":"update", "id":p[1], "value":p[3]}
+        p[0] = {"operation": "update", "id": p[1], "value": p[3]}
         print(f'var_assign {p[0]}', end="\n\n")
 
     def p_type(self, p):
@@ -203,19 +241,30 @@ class Parser:
         '''
         func_call : ID OPEN_BRACKET factors_n CLOSE_BRACKET
         '''
+        p[0] = dict()
+        p[0]["id"] = p[1]
+        p[0]["args"] = p[3]
+        p[0]["operation"] = "func_call"
         print('func_call', end="\n\n")
 
     def p_arg(self, p):
         '''
         arg : type ID
         '''
-        print('arg')
+        p[0] = {"type": self.reserved[p[1]], "id": p[2], "value": None}
+        print(p[0])
+        print('arg', end='\n\n')
 
     def p_args(self, p):
         '''
         args : args arg
                | arg
         '''
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1] + [p[2]]
+        print(p[0])
         print('args', end="\n\n")
 
     def p_if_stat(self, p):
@@ -247,9 +296,9 @@ class Parser:
                | comp
         '''
         if len(p) == 2:
-            p[0] = [{"operation":"first", "value":p[1]}]
+            p[0] = [{"operation": "first", "value": p[1]}]
         else:
-            p[0] = p[1] + [{"operation":p[2], "value":p[3]}]
+            p[0] = p[1] + [{"operation": p[2], "value": p[3]}]
         print(f'expr {p[0]}', end='\n\n')
 
     def p_brac_expr(self, p):
@@ -303,7 +352,7 @@ class Parser:
         if len(p) == 2:
             p[0] = p[1]
         elif len(p) == 3:
-            p[0] = {"operation":p[1], "value":p[2]}
+            p[0] = {"operation": p[1], "value": p[2]}
         print(f'p_factor_n {p[0]}', end="\n\n")
 
     def p_factors_n(self, p):
@@ -311,6 +360,11 @@ class Parser:
         factors_n : factor_n
                 | factors_n factor_n
         '''
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1] + [p[2]]
+        print(p[0])
 
     def p_comp(self, p):
         '''
@@ -318,9 +372,9 @@ class Parser:
                | factor_n
         '''
         if len(p) == 2:
-            p[0] = [{"operation":"first", "value":p[1]}]
+            p[0] = [{"operation": "first", "value": p[1]}]
         else:
-            p[0] = p[1] + [{"operation":p[2], "value":p[3]}]
+            p[0] = p[1] + [{"operation": p[2], "value": p[3]}]
 
         # if len(p) == 2:
         #     p[0] = p[1]
