@@ -78,6 +78,11 @@ class Parser:
                     scope_dict[event["id"]] = {"type":event["type"], "value":self._arithmetic_interpreter(event["value"], scope_dict)}
                 elif event["operation"] == "update":
                     scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
+                elif event["operation"] == "if_stat":
+                    if self._arithmetic_interpreter(event["cond"], scope_dict) != 0:
+                        self._fill_event_list(event["if_lines"], scope_dict)
+                    elif event["else_lines"] is not None:
+                        self._fill_event_list(event["else_lines"], scope_dict)
 
     def _arithmetic_interpreter(self, value, scope_dict):
         if type(value) == list:
@@ -197,10 +202,11 @@ class Parser:
         '''
         if_stat : IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
         '''
-        if p[3] > 0:
-            p[0] = p[6]
-        elif p[7] is not None:
-            p[0] = p[7]
+        p[0] = {"operation":"if_stat", "cond":p[3], "if_lines":p[6], "else_lines":p[7]}
+        # if p[3] > 0:
+        #     p[0] = p[6]
+        # elif p[7] is not None:
+        #     p[0] = p[7]
         print(f'if_stat {p[0]}', end="\n\n")
 
     def p_end_if(self, p):
@@ -208,7 +214,8 @@ class Parser:
         end_if : END
                  | else_stat
         '''
-        p[0] = p[1]
+        if type(p[1]) != str:
+            p[0] = p[1]
         print('end_if', end="\n\n")
 
     def p_else_stat(self, p):
