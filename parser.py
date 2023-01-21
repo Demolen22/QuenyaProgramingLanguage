@@ -236,6 +236,11 @@ class Parser:
         table_decl : LIST ID NUMBER ENDLINE
         '''
 
+    def p_table_assign(self):
+        '''
+        table_assign ID
+        '''
+
     def p_func_decl(self, p):
         '''
         func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
