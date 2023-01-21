@@ -1,4 +1,3 @@
 talma esse
-iluve idik1 : 10-2*(9+78);
-lav (1) san idik1 : 100 lanca;
+iluve idik1 : (10-2*(9+78));
 lanca

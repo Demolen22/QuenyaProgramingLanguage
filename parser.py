@@ -26,25 +26,24 @@ class Parser:
             r'talma': 'PROGRAM'
         }
         self.operations = {
-            '-':lambda x, y: x - y,
-            '+':lambda x, y: x + y,
-            '*':lambda x, y: x * y,
-            '/':lambda x, y: x / y,
-            '%':lambda x, y: x % y,
-            '<=':lambda x, y: int(x <= y),
-            '>=':lambda x, y: int(x >= y),
-            '<':lambda x, y: int(x < y),
-            '>':lambda x, y: int(x > y),
-            '=':lambda x, y: int(x == y),
-            '~=':lambda x, y: int(x != y),
-            '&':lambda x, y: int(x and y),
-            '|':lambda x, y: int(x or y),
-            '!':lambda x, y: int((x and (not y)) or ((not x) and y))
+            '-': lambda x, y: x - y,
+            '+': lambda x, y: x + y,
+            '*': lambda x, y: x * y,
+            '/': lambda x, y: x / y,
+            '%': lambda x, y: x % y,
+            '<=': lambda x, y: int(x <= y),
+            '>=': lambda x, y: int(x >= y),
+            '<': lambda x, y: int(x < y),
+            '>': lambda x, y: int(x > y),
+            '=': lambda x, y: int(x == y),
+            '~=': lambda x, y: int(x != y),
+            '&': lambda x, y: int(x and y),
+            '|': lambda x, y: int(x or y),
+            '!': lambda x, y: int((x and (not y)) or ((not x) and y))
         }
 
     def __del__(self):
         print('Parser destructor called.')
-
 
     tokens = Lexer.tokens
 
@@ -67,17 +66,29 @@ class Parser:
         p[0] = dict()
         if type(p[2]) == list:
             self._fill_event_list(p[2], p[0])
+        if type(p[2]) == dict:
+            self._save_func_declaration(p[2], p[0])
         print(f"block {p[0]}", end="\n\n")
 
+    def _save_func_declaration(self, function, scope_dict):
+        scope_dict[function["id"]] = {
+            "type": "function",
+            "args": function["args"],
+            "value": function["body"],
+            "return": function["return"]
+        }
+        print("scope dict", scope_dict)
     def _fill_event_list(self, event_list, scope_dict):
         for event in event_list:
             if event is not None:
                 if type(event) == list:
                     self._fill_event_list(event, scope_dict)
                 elif event["operation"] == "add_new_var":
-                    scope_dict[event["id"]] = {"type":event["type"], "value":self._arithmetic_interpreter(event["value"], scope_dict)}
+                    scope_dict[event["id"]] = {"type": event["type"],
+                                               "value": self._arithmetic_interpreter(event["value"], scope_dict)}
                 elif event["operation"] == "update":
                     scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
+        print("scope dict ", scope_dict)
 
     def _arithmetic_interpreter(self, value, scope_dict):
         if type(value) == list:
@@ -124,7 +135,7 @@ class Parser:
         if len(p) == 2:
             p[0] = [p[1]]
         else:
-            p[0] = p[1]+[p[2]]
+            p[0] = p[1] + [p[2]]
         print(f'p_lines {p[0]}', end="\n\n")
 
     def p_line(self, p):
@@ -149,27 +160,33 @@ class Parser:
         '''
         print : PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
         '''
-        print("OUTPUT:",p[3])
-        p[0] = {"operation":None}
+        print("OUTPUT:", p[3])
+        p[0] = {"operation": None}
 
     def p_func_decl(self, p):
         '''
         func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN block_body RETURN factor_n
         '''
+        p[0] = dict()
+        p[0]["id"] = p[2]
+        p[0]["args"] = p[4]
+        p[0]["body"] = p[7]
+        p[0]["return"] = p[9]
         print('func_decl', end="\n\n")
 
     def p_var_decl(self, p):
         '''
         var_decl : type ID ASSIGN factor_n ENDLINE
         '''
-        p[0] = {"type":self.reserved[p[1]], "id":p[2], "value":p[4], "operation":"add_new_var"}
+        # TODO if id in reserved throw error
+        p[0] = {"type": self.reserved[p[1]], "id": p[2], "value": p[4], "operation": "add_new_var"}
         print(f'var_decl {p[0]}', end="\n\n")
 
     def p_var_assign(self, p):
         '''
         var_assign : ID ASSIGN factor_n ENDLINE
         '''
-        p[0] = {"operation":"update", "id":p[1], "value":p[3]}
+        p[0] = {"operation": "update", "id": p[1], "value": p[3]}
         print(f'var_assign {p[0]}', end="\n\n")
 
     def p_type(self, p):
@@ -191,13 +208,20 @@ class Parser:
         '''
         arg : type ID
         '''
-        print('arg')
+        p[0] = {"type": self.reserved[p[1]], "id": p[2], "value": None, "operation": "add_new_var"}
+        print(p[0])
+        print('arg',end='\n\n')
 
     def p_args(self, p):
         '''
         args : args arg
                | arg
         '''
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1] + [p[2]]
+        print(p[0])
         print('args', end="\n\n")
 
     def p_if_stat(self, p):
@@ -238,9 +262,9 @@ class Parser:
         #     elif p[2] == '+':
         #         p[0] = p[1] + p[3]
         if len(p) == 2:
-            p[0] = [{"operation":"first", "value":p[1]}]
+            p[0] = [{"operation": "first", "value": p[1]}]
         else:
-            p[0] = p[1] + [{"operation":p[2], "value":p[3]}]
+            p[0] = p[1] + [{"operation": p[2], "value": p[3]}]
         print(f'expr {p[0]}', end='\n\n')
 
     def p_brac_expr(self, p):
@@ -294,7 +318,7 @@ class Parser:
         if len(p) == 2:
             p[0] = p[1]
         elif len(p) == 3:
-            p[0] = {"operation":p[1], "value":p[2]}
+            p[0] = {"operation": p[1], "value": p[2]}
         print(f'p_factor_n {p[0]}', end="\n\n")
 
     def p_factors_n(self, p):
@@ -309,9 +333,9 @@ class Parser:
                | factor_n
         '''
         if len(p) == 2:
-            p[0] = [{"operation":"first", "value":p[1]}]
+            p[0] = [{"operation": "first", "value": p[1]}]
         else:
-            p[0] = p[1] + [{"operation":p[2], "value":p[3]}]
+            p[0] = p[1] + [{"operation": p[2], "value": p[3]}]
 
         # if len(p) == 2:
         #     p[0] = p[1]
