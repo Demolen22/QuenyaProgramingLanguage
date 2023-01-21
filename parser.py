@@ -24,6 +24,7 @@ PRINT = "print"
 FUNC_CALL = "func_call"
 FUNC_DECL = "func_decl"
 
+
 class Parser:
     def __init__(self, lexer):
         print("Parser constructor called")
@@ -122,10 +123,9 @@ class Parser:
                     self._fill_event_list(event, scope_dict)
                 elif event[OPERATION] == ADD_NEW_VAR:
                     scope_dict[event[ID]] = {TYPE: event[TYPE],
-                                               VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
+                                             VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
                 elif event[OPERATION] == UPDATE:
                     scope_dict[event[ID]][VALUE] = self._arithmetic_interpreter(event[VALUE], scope_dict)
-
                 elif event[OPERATION] == ADD_NEW_FUNC:
                     self._save_func_declaration(event, scope_dict)
                 elif event[OPERATION] == IF_STAT:
@@ -133,6 +133,9 @@ class Parser:
                         self._fill_event_list(event[IF_LINES], scope_dict)
                     elif event[ELSE_LINES] is not None:
                         self._fill_event_list(event[ELSE_LINES], scope_dict)
+                elif event[OPERATION] == LOOP:
+                    while self._arithmetic_interpreter(event[COND], scope_dict) != 0:
+                        self._fill_event_list(event[BODY], scope_dict)
                 elif event[OPERATION] == PRINT:
                     print(f"OUTPUT: {self._arithmetic_interpreter(event[VALUE], scope_dict)}")
         print("scope dict ", scope_dict)
