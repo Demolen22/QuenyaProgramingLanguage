@@ -23,6 +23,8 @@ ELSE_LINES = "else_lines"
 PRINT = "print"
 FUNC_CALL = "func_call"
 FUNC_DECL = "func_decl"
+TABLE_DECL = "table_decl"
+SIZE = "size"
 
 class Parser:
     def __init__(self, lexer):
@@ -145,6 +147,8 @@ class Parser:
                         self._fill_event_list(event[ELSE_LINES], scope_dict)
                 elif event[OPERATION] == PRINT:
                     print(f"OUTPUT: {self._arithmetic_interpreter(event[VALUE], scope_dict)}")
+                elif event[OPERATION] == TABLE_DECL:
+                    scope_dict[event[ID]] = {TYPE: event[TYPE], SIZE: event[SIZE], VALUE: [None]*event[SIZE]}
         print("scope dict ", scope_dict)
 
     def _arithmetic_interpreter(self, value, scope_dict):
@@ -227,8 +231,10 @@ class Parser:
 
     def p_table_decl(self, p):
         '''
-        table_decl : LIST ID NUMBER ENDLINE
+        table_decl : LIST TYPE NUMBER ID ENDLINE
         '''
+        p[0] = {OPERATION:TABLE_DECL, TYPE:p[1], ID:p[4], SIZE:p[3]}
+        print(f"table_decl {p[0]}")
 
     def p_func_decl(self, p):
         '''
@@ -406,44 +412,6 @@ class Parser:
             p[0] = [{OPERATION: FIRST, VALUE: p[1]}]
         else:
             p[0] = p[1] + [{OPERATION: p[2], VALUE: p[3]}]
-
-        # if len(p) == 2:
-        #     p[0] = p[1]
-        #     print(p[0])
-        # elif p[2] == '*':
-        #     p[0] = p[1] * p[3]
-        #     print(p[0])
-        # elif p[2] == '/':
-        #     if p[3] == 0:
-        #         print('Cannot divide by 0')
-        #         raise ZeroDivisionError
-        #     else:
-        #         p[0] = p[1] / p[3]
-        #         print(p[0])
-        # elif p[2] == '%':
-        #     if p[3] == 0:
-        #         print('Cannot divide by 0')
-        #         raise ZeroDivisionError
-        #     else:
-        #         p[0] = p[1] % p[3]
-        # elif p[2] == '<=':
-        #     p[0] = int(p[1] <= p[3])
-        # elif p[2] == '>=':
-        #     p[0] = int(p[1] >= p[3])
-        # elif p[2] == '<':
-        #     p[0] = int(p[1] < p[3])
-        # elif p[2] == '>':
-        #     p[0] = int(p[1] > p[3])
-        # elif p[2] == '=':
-        #     p[0] = int(p[1] == p[3])
-        # elif p[2] == '~=':
-        #     p[0] = int(p[1] != p[3])
-        # elif p[2] == '&':
-        #     p[0] = int(p[1] and p[3])
-        # elif p[2] == '|':
-        #     p[0] = int(p[1] or p[3])
-        # elif p[2] == '!':
-        #     p[0] = int((p[1] and (not p[3])) or ((not p[1]) and p[3]))
         print(f'comp {p[0]}')
 
     def p_error(self, p):
