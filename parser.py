@@ -231,7 +231,7 @@ class Parser:
 
     def p_table_decl(self, p):
         '''
-        table_decl : LIST TYPE NUMBER ID ENDLINE
+        table_decl : LIST type NUMBER ID ENDLINE
         '''
         p[0] = {OPERATION:TABLE_DECL, TYPE:p[1], ID:p[4], SIZE:p[3]}
         print(f"table_decl {p[0]}")
