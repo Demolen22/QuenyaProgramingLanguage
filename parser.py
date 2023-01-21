@@ -26,6 +26,7 @@ FUNC_DECL = "func_decl"
 TABLE_DECL = "table_decl"
 SIZE = "size"
 
+
 class Parser:
     def __init__(self, lexer):
         print("Parser constructor called")
@@ -123,6 +124,8 @@ class Parser:
                 if type(event) == list:
                     self._fill_event_list(event, scope_dict)
                 elif event[OPERATION] == ADD_NEW_VAR:
+                    scope_dict[event[ID]] = {TYPE: event[TYPE],
+                                             VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
                     if event[TYPE] == "INT":
                         scope_dict[event[ID]] = {TYPE:event[TYPE], VALUE:self._arithmetic_interpreter(event[VALUE], scope_dict)}
                     elif event[TYPE] == "STRING":
@@ -145,6 +148,9 @@ class Parser:
                         self._fill_event_list(event[IF_LINES], scope_dict)
                     elif event[ELSE_LINES] is not None:
                         self._fill_event_list(event[ELSE_LINES], scope_dict)
+                elif event[OPERATION] == LOOP:
+                    while self._arithmetic_interpreter(event[COND], scope_dict) != 0:
+                        self._fill_event_list(event[BODY], scope_dict)
                 elif event[OPERATION] == PRINT:
                     print(f"OUTPUT: {self._arithmetic_interpreter(event[VALUE], scope_dict)}")
                 elif event[OPERATION] == TABLE_DECL:
