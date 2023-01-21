@@ -1,10 +1,10 @@
 talma esse
 iluve idik1 : (18-10*15+4);
 iluve idik2 : (0!1);
-@tec(1);
 lav(1) san
-idik1 : ~(12 % 5);
+idik1 : (~(12 % 5) + 2);
 eldarissa san
 idik1 : 13;
 lanca
+tec(idik1);
 lanca

@@ -84,14 +84,6 @@ class Parser:
             p[0] = p[1]+[p[2]]
         print(f'p_lines {p[0]}', end="\n\n")
 
-    # def p_line(self, p):
-    #     '''
-    #     line : line_body
-    #     '''
-    #     p[0] = p[1]
-    #     print(p[0])
-    #     print('p_line', end="\n\n")
-
     def p_line(self, p):
         '''
         line : var_decl
@@ -119,17 +111,9 @@ class Parser:
 
     def p_func_decl(self, p):
         '''
-        func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN block_body RETURN return_val
+        func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN block_body RETURN factor_n
         '''
         print('func_decl', end="\n\n")
-
-    def p_return_val(self, p):
-        '''
-        return_val : ID
-                     | expr
-                     | func_call
-        '''
-        print('return_val', end="\n\n")
 
     def p_var_decl(self, p):
         '''
