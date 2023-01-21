@@ -75,9 +75,21 @@ class Parser:
                 if type(event) == list:
                     self._fill_event_list(event, scope_dict)
                 elif event["operation"] == "add_new_var":
-                    scope_dict[event["id"]] = {"type":event["type"], "value":self._arithmetic_interpreter(event["value"], scope_dict)}
+                    if event["type"] == "INT":
+                        scope_dict[event["id"]] = {"type":event["type"], "value":self._arithmetic_interpreter(event["value"], scope_dict)}
+                    elif event["type"] == "STRING":
+                        scope_dict[event["id"]] = {"type": event["type"], "value": event["value"]}
                 elif event["operation"] == "update":
-                    scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
+                    if scope_dict.get(event["id"]) is None:
+                        print(f"VARIABLE {event['id']} UNDECLARED")
+                        raise Exception
+                    if scope_dict[event["id"]]["type"] == "INT":
+                        if type(event["value"]) == str:
+                            print(f"CANNOT ASSIGN STRING '{event['value']}' TO INT {event['id']}")
+                            raise Exception
+                        scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
+                    elif scope_dict[event["id"]]["type"] == "STRING":
+                        scope_dict[event["id"]]["value"] = event["value"]
                 elif event["operation"] == "if_stat":
                     if self._arithmetic_interpreter(event["cond"], scope_dict) != 0:
                         self._fill_event_list(event["if_lines"], scope_dict)
@@ -108,7 +120,12 @@ class Parser:
             else:
                 return self._arithmetic_interpreter(value["value"], scope_dict)
         elif type(value) == str:
-            # exception handling (var not in scope, types are correct)
+            if scope_dict.get(value) is None:
+                print(f"VARIABLE {value} UNDECLARED")
+                raise Exception
+            if scope_dict[value]["type"] == "STRING":
+                print(f"ILLEGAL ARITHMETIC OPERATION ON STRING VARIABLE: {value} {scope_dict[value]['value']}")
+                raise Exception
             return scope_dict[value]["value"]
         else:
             return value
@@ -123,7 +140,7 @@ class Parser:
             p[0] = [p[1]]
         else:
             p[0] = p[1]+[p[2]]
-        print(f'p_lines {p[0]}', end="\n\n")
+        print(f'lines {p[0]}', end="\n\n")
 
     def p_line(self, p):
         '''
@@ -159,7 +176,8 @@ class Parser:
 
     def p_var_decl(self, p):
         '''
-        var_decl : type ID ASSIGN factor_n ENDLINE
+        var_decl : INT ID ASSIGN factor_n ENDLINE
+                | STRING ID ASSIGN STRING_EXPR ENDLINE
         '''
         p[0] = {"type":self.reserved[p[1]], "id":p[2], "value":p[4], "operation":"add_new_var"}
         print(f'var_decl {p[0]}', end="\n\n")
@@ -167,6 +185,7 @@ class Parser:
     def p_var_assign(self, p):
         '''
         var_assign : ID ASSIGN factor_n ENDLINE
+                    | ID ASSIGN STRING_EXPR ENDLINE
         '''
         p[0] = {"operation":"update", "id":p[1], "value":p[3]}
         print(f'var_assign {p[0]}', end="\n\n")
