@@ -25,6 +25,22 @@ class Parser:
             r'hyalin': 'LIST',
             r'talma': 'PROGRAM'
         }
+        self.operations = {
+            '-':lambda x, y: x - y,
+            '+':lambda x, y: x + y,
+            '*':lambda x, y: x * y,
+            '/':lambda x, y: x / y,
+            '%':lambda x, y: x % y,
+            '<=':lambda x, y: int(x <= y),
+            '>=':lambda x, y: int(x >= y),
+            '<':lambda x, y: int(x < y),
+            '>':lambda x, y: int(x > y),
+            '=':lambda x, y: int(x == y),
+            '~=':lambda x, y: int(x != y),
+            '&':lambda x, y: int(x and y),
+            '|':lambda x, y: int(x or y),
+            '!':lambda x, y: int((x and (not y)) or ((not x) and y))
+        }
 
     def __del__(self):
         print('Parser destructor called.')
@@ -59,9 +75,36 @@ class Parser:
                 if type(event) == list:
                     self._fill_event_list(event, scope_dict)
                 elif event["operation"] == "add_new_var":
-                    scope_dict[event["id"]] = {"type":event["type"], "value":event["value"]}
+                    scope_dict[event["id"]] = {"type":event["type"], "value":self._arithmetic_interpreter(event["value"], scope_dict)}
                 elif event["operation"] == "update":
-                    scope_dict[event["id"]]["value"] = event["value"]
+                    scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
+
+    def _arithmetic_interpreter(self, value, scope_dict):
+        if type(value) == list:
+            result = 0
+            for val in value:
+                if val["operation"] == "first":
+                    result = self._arithmetic_interpreter(val["value"], scope_dict)
+                else:
+                    component = self._arithmetic_interpreter(val["value"], scope_dict)
+                    if component == 0 and (val["operation"] == '/' or val["operation"] == '%'):
+                        print("ZERO DIVISION ATTEMPT")
+                        raise ZeroDivisionError
+                    else:
+                        print(f"{result} {val['operation']} {component} = ", end="")
+                        result = self.operations[val["operation"]](result, component)
+                        print(result)
+            return result
+        elif type(value) == dict:
+            if value["operation"] == "~":
+                return int(not self._arithmetic_interpreter(value["value"], scope_dict))
+            else:
+                return self._arithmetic_interpreter(value["value"], scope_dict)
+        elif type(value) == str:
+            # exception handling (var not in scope, types are correct)
+            return scope_dict[value]["value"]
+        else:
+            return value
 
     def p_block_body(self, p):
         '''
@@ -187,16 +230,18 @@ class Parser:
         expr : expr oper_add comp
                | comp
         '''
+        # if len(p) == 2:
+        #     p[0] = p[1]
+        # else:
+        #     if p[2] == '-':
+        #         p[0] = p[1] - p[3]
+        #     elif p[2] == '+':
+        #         p[0] = p[1] + p[3]
         if len(p) == 2:
-            print(p[0], p[1])
-            p[0] = p[1]
+            p[0] = [{"operation":"first", "value":p[1]}]
         else:
-            if p[2] == '-':
-                p[0] = p[1] - p[3]
-            elif p[2] == '+':
-                p[0] = p[1] + p[3]
-        print(p[0])
-        print('expr', end='\n\n')
+            p[0] = p[1] + [{"operation":p[2], "value":p[3]}]
+        print(f'expr {p[0]}', end='\n\n')
 
     def p_brac_expr(self, p):
         '''
@@ -239,8 +284,7 @@ class Parser:
                  | func_call
         '''
         p[0] = p[1]
-        print(p[0])
-        print('p_factor', end="\n\n")
+        print(f'p_factor {p[0]}', end="\n\n")
 
     def p_factor_n(self, p):
         '''
@@ -250,9 +294,8 @@ class Parser:
         if len(p) == 2:
             p[0] = p[1]
         elif len(p) == 3:
-            p[0] = int(not p[2])
-        print(p[0])
-        print('p_factor_n', end="\n\n")
+            p[0] = {"operation":p[1], "value":p[2]}
+        print(f'p_factor_n {p[0]}', end="\n\n")
 
     def p_factors_n(self, p):
         '''
@@ -266,43 +309,48 @@ class Parser:
                | factor_n
         '''
         if len(p) == 2:
-            p[0] = p[1]
-            print(p[0])
-        elif p[2] == '*':
-            p[0] = p[1] * p[3]
-            print(p[0])
-        elif p[2] == '/':
-            if p[3] == 0:
-                print('Cannot divide by 0')
-                raise ZeroDivisionError
-            else:
-                p[0] = p[1] / p[3]
-                print(p[0])
-        elif p[2] == '%':
-            if p[3] == 0:
-                print('Cannot divide by 0')
-                raise ZeroDivisionError
-            else:
-                p[0] = p[1] % p[3]
-        elif p[2] == '<=':
-            p[0] = int(p[1] <= p[3])
-        elif p[2] == '>=':
-            p[0] = int(p[1] >= p[3])
-        elif p[2] == '<':
-            p[0] = int(p[1] < p[3])
-        elif p[2] == '>':
-            p[0] = int(p[1] > p[3])
-        elif p[2] == '=':
-            p[0] = int(p[1] == p[3])
-        elif p[2] == '~=':
-            p[0] = int(p[1] != p[3])
-        elif p[2] == '&':
-            p[0] = int(p[1] and p[3])
-        elif p[2] == '|':
-            p[0] = int(p[1] or p[3])
-        elif p[2] == '!':
-            p[0] = int((p[1] and (not p[3])) or ((not p[1]) and p[3]))
-        print('comp')
+            p[0] = [{"operation":"first", "value":p[1]}]
+        else:
+            p[0] = p[1] + [{"operation":p[2], "value":p[3]}]
+
+        # if len(p) == 2:
+        #     p[0] = p[1]
+        #     print(p[0])
+        # elif p[2] == '*':
+        #     p[0] = p[1] * p[3]
+        #     print(p[0])
+        # elif p[2] == '/':
+        #     if p[3] == 0:
+        #         print('Cannot divide by 0')
+        #         raise ZeroDivisionError
+        #     else:
+        #         p[0] = p[1] / p[3]
+        #         print(p[0])
+        # elif p[2] == '%':
+        #     if p[3] == 0:
+        #         print('Cannot divide by 0')
+        #         raise ZeroDivisionError
+        #     else:
+        #         p[0] = p[1] % p[3]
+        # elif p[2] == '<=':
+        #     p[0] = int(p[1] <= p[3])
+        # elif p[2] == '>=':
+        #     p[0] = int(p[1] >= p[3])
+        # elif p[2] == '<':
+        #     p[0] = int(p[1] < p[3])
+        # elif p[2] == '>':
+        #     p[0] = int(p[1] > p[3])
+        # elif p[2] == '=':
+        #     p[0] = int(p[1] == p[3])
+        # elif p[2] == '~=':
+        #     p[0] = int(p[1] != p[3])
+        # elif p[2] == '&':
+        #     p[0] = int(p[1] and p[3])
+        # elif p[2] == '|':
+        #     p[0] = int(p[1] or p[3])
+        # elif p[2] == '!':
+        #     p[0] = int((p[1] and (not p[3])) or ((not p[1]) and p[3]))
+        print(f'comp {p[0]}')
 
     def p_error(self, p):
         '''

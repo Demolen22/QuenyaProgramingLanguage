@@ -82,7 +82,6 @@ class Lexer:
         return t
 
     def t_STRING_EXPR(self, t):
-        # r'\{[a-zA-Z0-9_\+\-\*\/\%\(\)\{\}\[\]\=\:\<\>\&\|\!\~\;\@\s]*\}'
         r'\{.*\}'
         t.value = t.value[1:-1]
         return t
