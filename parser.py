@@ -62,7 +62,7 @@ class Parser:
 
     def p_block(self, p):
         '''
-        block : BEGIN block_body END
+        block : BEGIN lines END
         '''
         p[0] = dict()
         if type(p[2]) == list:
@@ -106,15 +106,6 @@ class Parser:
         else:
             return value
 
-    def p_block_body(self, p):
-        '''
-        block_body : lines
-                     | loop
-                     | func_decl
-        '''
-        p[0] = p[1]
-        print(f'block_body {p[0]}', end="\n\n")
-
     def p_lines(self, p):
         '''
         lines : lines line
@@ -134,13 +125,15 @@ class Parser:
                 | if_stat
                 | comment
                 | print
+                | loop
+                | func_decl
         '''
         p[0] = p[1]
         print(f'line {p[0]}', end="\n\n")
 
     def p_loop(self, p):
         '''
-        loop : LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN block_body END
+        loop : LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
         '''
 
         print('loop', end="\n\n")
@@ -154,7 +147,7 @@ class Parser:
 
     def p_func_decl(self, p):
         '''
-        func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN block_body RETURN factor_n
+        func_decl : FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
         '''
         print('func_decl', end="\n\n")
 
@@ -202,7 +195,7 @@ class Parser:
 
     def p_if_stat(self, p):
         '''
-        if_stat : IF OPEN_BRACKET expr CLOSE_BRACKET THEN block_body end_if
+        if_stat : IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
         '''
         if p[3] > 0:
             p[0] = p[6]
@@ -220,7 +213,7 @@ class Parser:
 
     def p_else_stat(self, p):
         '''
-        else_stat : ELSE THEN block_body END
+        else_stat : ELSE THEN lines END
         '''
         p[0] = p[3]
         print(f'else_stat {p[0]}', end="\n\n")
