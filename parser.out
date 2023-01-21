@@ -3,10 +3,8 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     CLOSE_CURL_BRACKET
-    CLOSE_SQ_BRACKET
     NULL
     OPEN_CURL_BRACKET
-    OPEN_SQ_BRACKET
 
 Grammar
 
@@ -24,123 +22,126 @@ Rule 10    line -> print
 Rule 11    line -> loop
 Rule 12    line -> func_decl
 Rule 13    line -> table_decl
-Rule 14    loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-Rule 15    print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-Rule 16    table_decl -> LIST ID NUMBER ENDLINE
-Rule 17    func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-Rule 18    var_decl -> INT ID ASSIGN factor_n ENDLINE
-Rule 19    var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE
-Rule 20    var_assign -> ID ASSIGN factor_n ENDLINE
-Rule 21    var_assign -> ID ASSIGN STRING_EXPR ENDLINE
-Rule 22    type -> INT
-Rule 23    type -> STRING
-Rule 24    func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET
-Rule 25    arg -> type ID
-Rule 26    args -> args arg
-Rule 27    args -> arg
-Rule 28    if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
-Rule 29    end_if -> END
-Rule 30    end_if -> else_stat
-Rule 31    else_stat -> ELSE THEN lines END
-Rule 32    expr -> expr oper_add comp
-Rule 33    expr -> comp
-Rule 34    brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET
-Rule 35    oper_add -> PLUS
-Rule 36    oper_add -> MINUS
-Rule 37    oper_mult -> MULT
-Rule 38    oper_mult -> DIV
-Rule 39    oper_mult -> MOD
-Rule 40    oper_mult -> AND
-Rule 41    oper_mult -> OR
-Rule 42    oper_mult -> XOR
-Rule 43    oper_mult -> LESSER
-Rule 44    oper_mult -> GREATER
-Rule 45    oper_mult -> EQUAL
-Rule 46    oper_mult -> LESSER_EQ
-Rule 47    oper_mult -> GREATER_EQ
-Rule 48    oper_mult -> N_EQUAL
-Rule 49    factor -> ID
-Rule 50    factor -> NUMBER
-Rule 51    factor -> brac_expr
-Rule 52    factor -> func_call
-Rule 53    factor_n -> NOT factor
-Rule 54    factor_n -> factor
-Rule 55    factors_n -> factor_n
-Rule 56    factors_n -> factors_n factor_n
-Rule 57    comp -> comp oper_mult factor_n
-Rule 58    comp -> factor_n
+Rule 14    line -> table_assign
+Rule 15    loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+Rule 16    print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+Rule 17    table_decl -> LIST type NUMBER ID ENDLINE
+Rule 18    table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
+Rule 19    func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+Rule 20    var_decl -> INT ID ASSIGN factor_n ENDLINE
+Rule 21    var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE
+Rule 22    var_assign -> ID ASSIGN factor_n ENDLINE
+Rule 23    var_assign -> ID ASSIGN STRING_EXPR ENDLINE
+Rule 24    type -> INT
+Rule 25    type -> STRING
+Rule 26    func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET
+Rule 27    arg -> type ID
+Rule 28    args -> args arg
+Rule 29    args -> arg
+Rule 30    if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+Rule 31    end_if -> END
+Rule 32    end_if -> else_stat
+Rule 33    else_stat -> ELSE THEN lines END
+Rule 34    expr -> expr oper_add comp
+Rule 35    expr -> comp
+Rule 36    brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET
+Rule 37    oper_add -> PLUS
+Rule 38    oper_add -> MINUS
+Rule 39    oper_mult -> MULT
+Rule 40    oper_mult -> DIV
+Rule 41    oper_mult -> MOD
+Rule 42    oper_mult -> AND
+Rule 43    oper_mult -> OR
+Rule 44    oper_mult -> XOR
+Rule 45    oper_mult -> LESSER
+Rule 46    oper_mult -> GREATER
+Rule 47    oper_mult -> EQUAL
+Rule 48    oper_mult -> LESSER_EQ
+Rule 49    oper_mult -> GREATER_EQ
+Rule 50    oper_mult -> N_EQUAL
+Rule 51    factor -> ID
+Rule 52    factor -> NUMBER
+Rule 53    factor -> brac_expr
+Rule 54    factor -> func_call
+Rule 55    factor_n -> NOT factor
+Rule 56    factor_n -> factor
+Rule 57    factors_n -> factor_n
+Rule 58    factors_n -> factors_n factor_n
+Rule 59    comp -> comp oper_mult factor_n
+Rule 60    comp -> factor_n
 
 Terminals, with rules where they appear
 
-AND                  : 40
-ASSIGN               : 18 19 20 21
-BEGIN                : 3 14 17
-CLOSE_BRACKET        : 14 15 17 24 28 34
+AND                  : 42
+ASSIGN               : 18 20 21 22 23
+BEGIN                : 3 15 19
+CLOSE_BRACKET        : 15 16 19 26 30 36
 CLOSE_CURL_BRACKET   : 
-CLOSE_SQ_BRACKET     : 
+CLOSE_SQ_BRACKET     : 18
 COMMENT              : 2
-DIV                  : 38
-ELSE                 : 31
-END                  : 3 14 29 31
-ENDLINE              : 15 16 18 19 20 21
-EQUAL                : 45
-FUNCTION             : 17
-GREATER              : 44
-GREATER_EQ           : 47
-ID                   : 16 17 18 19 20 21 24 25 49
-IF                   : 28
-INT                  : 18 22
-LESSER               : 43
-LESSER_EQ            : 46
-LIST                 : 16
-LOOP                 : 14
-MINUS                : 36
-MOD                  : 39
-MULT                 : 37
-NOT                  : 53
+DIV                  : 40
+ELSE                 : 33
+END                  : 3 15 31 33
+ENDLINE              : 16 17 18 20 21 22 23
+EQUAL                : 47
+FUNCTION             : 19
+GREATER              : 46
+GREATER_EQ           : 49
+ID                   : 17 18 19 20 21 22 23 26 27 51
+IF                   : 30
+INT                  : 20 24
+LESSER               : 45
+LESSER_EQ            : 48
+LIST                 : 17
+LOOP                 : 15
+MINUS                : 38
+MOD                  : 41
+MULT                 : 39
+NOT                  : 55
 NULL                 : 
-NUMBER               : 16 50
-N_EQUAL              : 48
-OPEN_BRACKET         : 14 15 17 24 28 34
+NUMBER               : 17 18 52
+N_EQUAL              : 50
+OPEN_BRACKET         : 15 16 19 26 30 36
 OPEN_CURL_BRACKET    : 
-OPEN_SQ_BRACKET      : 
-OR                   : 41
-PLUS                 : 35
-PRINT                : 15
+OPEN_SQ_BRACKET      : 18
+OR                   : 43
+PLUS                 : 37
+PRINT                : 16
 PROGRAM              : 1
-RETURN               : 17
-STRING               : 19 23
-STRING_EXPR          : 19 21
-THEN                 : 28 31
-XOR                  : 42
+RETURN               : 19
+STRING               : 21 25
+STRING_EXPR          : 21 23
+THEN                 : 30 33
+XOR                  : 44
 error                : 
 
 Nonterminals, with rules where they appear
 
-arg                  : 26 27
-args                 : 17 26
+arg                  : 28 29
+args                 : 19 28
 block                : 1
-brac_expr            : 51
+brac_expr            : 53
 comment              : 9
-comp                 : 32 33 57
-else_stat            : 30
-end_if               : 28
-expr                 : 14 15 28 32 34
-factor               : 53 54
-factor_n             : 17 18 20 55 56 57 58
-factors_n            : 24 56
-func_call            : 52
+comp                 : 34 35 59
+else_stat            : 32
+end_if               : 30
+expr                 : 15 16 30 34 36
+factor               : 55 56
+factor_n             : 18 19 20 22 57 58 59 60
+factors_n            : 26 58
+func_call            : 54
 func_decl            : 12
 if_stat              : 8
 line                 : 4 5
-lines                : 3 4 14 17 28 31
+lines                : 3 4 15 19 30 33
 loop                 : 11
-oper_add             : 32
-oper_mult            : 57
+oper_add             : 34
+oper_mult            : 59
 print                : 10
 program_decl         : 0
+table_assign         : 14
 table_decl           : 13
-type                 : 25
+type                 : 17 27
 var_assign           : 7
 var_decl             : 6
 
@@ -190,26 +191,28 @@ state 4
     (11) line -> . loop
     (12) line -> . func_decl
     (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
     (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
     lines                          shift and go to state 5
     line                           shift and go to state 6
@@ -221,6 +224,7 @@ state 4
     loop                           shift and go to state 12
     func_decl                      shift and go to state 13
     table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
 
 state 5
 
@@ -234,29 +238,31 @@ state 5
     (11) line -> . loop
     (12) line -> . func_decl
     (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
     (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    END             shift and go to state 24
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    END             shift and go to state 25
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
-    line                           shift and go to state 25
+    line                           shift and go to state 26
     var_decl                       shift and go to state 7
     var_assign                     shift and go to state 8
     if_stat                        shift and go to state 9
@@ -265,6 +271,7 @@ state 5
     loop                           shift and go to state 12
     func_decl                      shift and go to state 13
     table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
 
 state 6
 
@@ -430,34 +437,54 @@ state 14
 
 state 15
 
-    (18) var_decl -> INT . ID ASSIGN factor_n ENDLINE
+    (14) line -> table_assign .
 
-    ID              shift and go to state 26
+    END             reduce using rule 14 (line -> table_assign .)
+    INT             reduce using rule 14 (line -> table_assign .)
+    STRING          reduce using rule 14 (line -> table_assign .)
+    ID              reduce using rule 14 (line -> table_assign .)
+    IF              reduce using rule 14 (line -> table_assign .)
+    COMMENT         reduce using rule 14 (line -> table_assign .)
+    PRINT           reduce using rule 14 (line -> table_assign .)
+    LOOP            reduce using rule 14 (line -> table_assign .)
+    FUNCTION        reduce using rule 14 (line -> table_assign .)
+    LIST            reduce using rule 14 (line -> table_assign .)
+    ELSE            reduce using rule 14 (line -> table_assign .)
+    RETURN          reduce using rule 14 (line -> table_assign .)
 
 
 state 16
 
-    (20) var_assign -> ID . ASSIGN factor_n ENDLINE
-    (21) var_assign -> ID . ASSIGN STRING_EXPR ENDLINE
+    (20) var_decl -> INT . ID ASSIGN factor_n ENDLINE
 
-    ASSIGN          shift and go to state 27
+    ID              shift and go to state 27
 
 
 state 17
 
-    (19) var_decl -> STRING . ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> ID . ASSIGN factor_n ENDLINE
+    (23) var_assign -> ID . ASSIGN STRING_EXPR ENDLINE
+    (18) table_assign -> ID . OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    ID              shift and go to state 28
+    ASSIGN          shift and go to state 28
+    OPEN_SQ_BRACKET shift and go to state 29
 
 
 state 18
 
-    (28) if_stat -> IF . OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (21) var_decl -> STRING . ID ASSIGN STRING_EXPR ENDLINE
 
-    OPEN_BRACKET    shift and go to state 29
+    ID              shift and go to state 30
 
 
 state 19
+
+    (30) if_stat -> IF . OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+
+    OPEN_BRACKET    shift and go to state 31
+
+
+state 20
 
     (2) comment -> COMMENT .
 
@@ -475,42 +502,46 @@ state 19
     RETURN          reduce using rule 2 (comment -> COMMENT .)
 
 
-state 20
-
-    (15) print -> PRINT . OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-
-    OPEN_BRACKET    shift and go to state 30
-
-
 state 21
 
-    (14) loop -> LOOP . OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (16) print -> PRINT . OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
 
-    OPEN_BRACKET    shift and go to state 31
+    OPEN_BRACKET    shift and go to state 32
 
 
 state 22
 
-    (17) func_decl -> FUNCTION . ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (15) loop -> LOOP . OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
 
-    ID              shift and go to state 32
+    OPEN_BRACKET    shift and go to state 33
 
 
 state 23
 
-    (16) table_decl -> LIST . ID NUMBER ENDLINE
+    (19) func_decl -> FUNCTION . ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
 
-    ID              shift and go to state 33
+    ID              shift and go to state 34
 
 
 state 24
+
+    (17) table_decl -> LIST . type NUMBER ID ENDLINE
+    (24) type -> . INT
+    (25) type -> . STRING
+
+    INT             shift and go to state 36
+    STRING          shift and go to state 37
+
+    type                           shift and go to state 35
+
+state 25
 
     (3) block -> BEGIN lines END .
 
     $end            reduce using rule 3 (block -> BEGIN lines END .)
 
 
-state 25
+state 26
 
     (4) lines -> lines line .
 
@@ -528,1164 +559,1079 @@ state 25
     RETURN          reduce using rule 4 (lines -> lines line .)
 
 
-state 26
-
-    (18) var_decl -> INT ID . ASSIGN factor_n ENDLINE
-
-    ASSIGN          shift and go to state 34
-
-
 state 27
 
-    (20) var_assign -> ID ASSIGN . factor_n ENDLINE
-    (21) var_assign -> ID ASSIGN . STRING_EXPR ENDLINE
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (20) var_decl -> INT ID . ASSIGN factor_n ENDLINE
 
-    STRING_EXPR     shift and go to state 37
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    ASSIGN          shift and go to state 38
 
-    factor_n                       shift and go to state 36
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 28
 
-    (19) var_decl -> STRING ID . ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> ID ASSIGN . factor_n ENDLINE
+    (23) var_assign -> ID ASSIGN . STRING_EXPR ENDLINE
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    ASSIGN          shift and go to state 44
+    STRING_EXPR     shift and go to state 41
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    factor_n                       shift and go to state 40
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 29
 
-    (28) if_stat -> IF OPEN_BRACKET . expr CLOSE_BRACKET THEN lines end_if
-    (32) expr -> . expr oper_add comp
-    (33) expr -> . comp
-    (57) comp -> . comp oper_mult factor_n
-    (58) comp -> . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (18) table_assign -> ID OPEN_SQ_BRACKET . NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    NUMBER          shift and go to state 48
 
-    expr                           shift and go to state 45
-    comp                           shift and go to state 46
-    factor_n                       shift and go to state 47
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 30
 
-    (15) print -> PRINT OPEN_BRACKET . expr CLOSE_BRACKET ENDLINE
-    (32) expr -> . expr oper_add comp
-    (33) expr -> . comp
-    (57) comp -> . comp oper_mult factor_n
-    (58) comp -> . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (21) var_decl -> STRING ID . ASSIGN STRING_EXPR ENDLINE
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    ASSIGN          shift and go to state 49
 
-    expr                           shift and go to state 48
-    comp                           shift and go to state 46
-    factor_n                       shift and go to state 47
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 31
 
-    (14) loop -> LOOP OPEN_BRACKET . expr CLOSE_BRACKET BEGIN lines END
-    (32) expr -> . expr oper_add comp
-    (33) expr -> . comp
-    (57) comp -> . comp oper_mult factor_n
-    (58) comp -> . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (30) if_stat -> IF OPEN_BRACKET . expr CLOSE_BRACKET THEN lines end_if
+    (34) expr -> . expr oper_add comp
+    (35) expr -> . comp
+    (59) comp -> . comp oper_mult factor_n
+    (60) comp -> . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
-    expr                           shift and go to state 49
-    comp                           shift and go to state 46
-    factor_n                       shift and go to state 47
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
+    expr                           shift and go to state 50
+    comp                           shift and go to state 51
+    factor_n                       shift and go to state 52
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 32
 
-    (17) func_decl -> FUNCTION ID . OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (16) print -> PRINT OPEN_BRACKET . expr CLOSE_BRACKET ENDLINE
+    (34) expr -> . expr oper_add comp
+    (35) expr -> . comp
+    (59) comp -> . comp oper_mult factor_n
+    (60) comp -> . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    OPEN_BRACKET    shift and go to state 50
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    expr                           shift and go to state 53
+    comp                           shift and go to state 51
+    factor_n                       shift and go to state 52
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 33
 
-    (16) table_decl -> LIST ID . NUMBER ENDLINE
+    (15) loop -> LOOP OPEN_BRACKET . expr CLOSE_BRACKET BEGIN lines END
+    (34) expr -> . expr oper_add comp
+    (35) expr -> . comp
+    (59) comp -> . comp oper_mult factor_n
+    (60) comp -> . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    NUMBER          shift and go to state 51
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    expr                           shift and go to state 54
+    comp                           shift and go to state 51
+    factor_n                       shift and go to state 52
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 34
 
-    (18) var_decl -> INT ID ASSIGN . factor_n ENDLINE
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (19) func_decl -> FUNCTION ID . OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    OPEN_BRACKET    shift and go to state 55
 
-    factor_n                       shift and go to state 52
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 35
 
-    (49) factor -> ID .
-    (24) func_call -> ID . OPEN_BRACKET factors_n CLOSE_BRACKET
+    (17) table_decl -> LIST type . NUMBER ID ENDLINE
 
-  ! shift/reduce conflict for OPEN_BRACKET resolved as shift
-    ENDLINE         reduce using rule 49 (factor -> ID .)
-    MULT            reduce using rule 49 (factor -> ID .)
-    DIV             reduce using rule 49 (factor -> ID .)
-    MOD             reduce using rule 49 (factor -> ID .)
-    AND             reduce using rule 49 (factor -> ID .)
-    OR              reduce using rule 49 (factor -> ID .)
-    XOR             reduce using rule 49 (factor -> ID .)
-    LESSER          reduce using rule 49 (factor -> ID .)
-    GREATER         reduce using rule 49 (factor -> ID .)
-    EQUAL           reduce using rule 49 (factor -> ID .)
-    LESSER_EQ       reduce using rule 49 (factor -> ID .)
-    GREATER_EQ      reduce using rule 49 (factor -> ID .)
-    N_EQUAL         reduce using rule 49 (factor -> ID .)
-    CLOSE_BRACKET   reduce using rule 49 (factor -> ID .)
-    PLUS            reduce using rule 49 (factor -> ID .)
-    MINUS           reduce using rule 49 (factor -> ID .)
-    NOT             reduce using rule 49 (factor -> ID .)
-    ID              reduce using rule 49 (factor -> ID .)
-    NUMBER          reduce using rule 49 (factor -> ID .)
-    END             reduce using rule 49 (factor -> ID .)
-    INT             reduce using rule 49 (factor -> ID .)
-    STRING          reduce using rule 49 (factor -> ID .)
-    IF              reduce using rule 49 (factor -> ID .)
-    COMMENT         reduce using rule 49 (factor -> ID .)
-    PRINT           reduce using rule 49 (factor -> ID .)
-    LOOP            reduce using rule 49 (factor -> ID .)
-    FUNCTION        reduce using rule 49 (factor -> ID .)
-    LIST            reduce using rule 49 (factor -> ID .)
-    ELSE            reduce using rule 49 (factor -> ID .)
-    RETURN          reduce using rule 49 (factor -> ID .)
-    OPEN_BRACKET    shift and go to state 53
-
-  ! OPEN_BRACKET    [ reduce using rule 49 (factor -> ID .) ]
+    NUMBER          shift and go to state 56
 
 
 state 36
 
-    (20) var_assign -> ID ASSIGN factor_n . ENDLINE
+    (24) type -> INT .
 
-    ENDLINE         shift and go to state 54
+    NUMBER          reduce using rule 24 (type -> INT .)
+    ID              reduce using rule 24 (type -> INT .)
 
 
 state 37
 
-    (21) var_assign -> ID ASSIGN STRING_EXPR . ENDLINE
+    (25) type -> STRING .
 
-    ENDLINE         shift and go to state 55
+    NUMBER          reduce using rule 25 (type -> STRING .)
+    ID              reduce using rule 25 (type -> STRING .)
 
 
 state 38
 
-    (53) factor_n -> NOT . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (20) var_decl -> INT ID ASSIGN . factor_n ENDLINE
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
-    factor                         shift and go to state 56
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
+    factor_n                       shift and go to state 57
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 39
 
-    (54) factor_n -> factor .
+    (51) factor -> ID .
+    (26) func_call -> ID . OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    ENDLINE         reduce using rule 54 (factor_n -> factor .)
-    MULT            reduce using rule 54 (factor_n -> factor .)
-    DIV             reduce using rule 54 (factor_n -> factor .)
-    MOD             reduce using rule 54 (factor_n -> factor .)
-    AND             reduce using rule 54 (factor_n -> factor .)
-    OR              reduce using rule 54 (factor_n -> factor .)
-    XOR             reduce using rule 54 (factor_n -> factor .)
-    LESSER          reduce using rule 54 (factor_n -> factor .)
-    GREATER         reduce using rule 54 (factor_n -> factor .)
-    EQUAL           reduce using rule 54 (factor_n -> factor .)
-    LESSER_EQ       reduce using rule 54 (factor_n -> factor .)
-    GREATER_EQ      reduce using rule 54 (factor_n -> factor .)
-    N_EQUAL         reduce using rule 54 (factor_n -> factor .)
-    CLOSE_BRACKET   reduce using rule 54 (factor_n -> factor .)
-    PLUS            reduce using rule 54 (factor_n -> factor .)
-    MINUS           reduce using rule 54 (factor_n -> factor .)
-    NOT             reduce using rule 54 (factor_n -> factor .)
-    ID              reduce using rule 54 (factor_n -> factor .)
-    NUMBER          reduce using rule 54 (factor_n -> factor .)
-    OPEN_BRACKET    reduce using rule 54 (factor_n -> factor .)
-    END             reduce using rule 54 (factor_n -> factor .)
-    INT             reduce using rule 54 (factor_n -> factor .)
-    STRING          reduce using rule 54 (factor_n -> factor .)
-    IF              reduce using rule 54 (factor_n -> factor .)
-    COMMENT         reduce using rule 54 (factor_n -> factor .)
-    PRINT           reduce using rule 54 (factor_n -> factor .)
-    LOOP            reduce using rule 54 (factor_n -> factor .)
-    FUNCTION        reduce using rule 54 (factor_n -> factor .)
-    LIST            reduce using rule 54 (factor_n -> factor .)
-    ELSE            reduce using rule 54 (factor_n -> factor .)
-    RETURN          reduce using rule 54 (factor_n -> factor .)
+  ! shift/reduce conflict for OPEN_BRACKET resolved as shift
+    ENDLINE         reduce using rule 51 (factor -> ID .)
+    MULT            reduce using rule 51 (factor -> ID .)
+    DIV             reduce using rule 51 (factor -> ID .)
+    MOD             reduce using rule 51 (factor -> ID .)
+    AND             reduce using rule 51 (factor -> ID .)
+    OR              reduce using rule 51 (factor -> ID .)
+    XOR             reduce using rule 51 (factor -> ID .)
+    LESSER          reduce using rule 51 (factor -> ID .)
+    GREATER         reduce using rule 51 (factor -> ID .)
+    EQUAL           reduce using rule 51 (factor -> ID .)
+    LESSER_EQ       reduce using rule 51 (factor -> ID .)
+    GREATER_EQ      reduce using rule 51 (factor -> ID .)
+    N_EQUAL         reduce using rule 51 (factor -> ID .)
+    CLOSE_BRACKET   reduce using rule 51 (factor -> ID .)
+    PLUS            reduce using rule 51 (factor -> ID .)
+    MINUS           reduce using rule 51 (factor -> ID .)
+    NOT             reduce using rule 51 (factor -> ID .)
+    ID              reduce using rule 51 (factor -> ID .)
+    NUMBER          reduce using rule 51 (factor -> ID .)
+    END             reduce using rule 51 (factor -> ID .)
+    INT             reduce using rule 51 (factor -> ID .)
+    STRING          reduce using rule 51 (factor -> ID .)
+    IF              reduce using rule 51 (factor -> ID .)
+    COMMENT         reduce using rule 51 (factor -> ID .)
+    PRINT           reduce using rule 51 (factor -> ID .)
+    LOOP            reduce using rule 51 (factor -> ID .)
+    FUNCTION        reduce using rule 51 (factor -> ID .)
+    LIST            reduce using rule 51 (factor -> ID .)
+    ELSE            reduce using rule 51 (factor -> ID .)
+    RETURN          reduce using rule 51 (factor -> ID .)
+    OPEN_BRACKET    shift and go to state 58
+
+  ! OPEN_BRACKET    [ reduce using rule 51 (factor -> ID .) ]
 
 
 state 40
 
-    (50) factor -> NUMBER .
+    (22) var_assign -> ID ASSIGN factor_n . ENDLINE
 
-    ENDLINE         reduce using rule 50 (factor -> NUMBER .)
-    MULT            reduce using rule 50 (factor -> NUMBER .)
-    DIV             reduce using rule 50 (factor -> NUMBER .)
-    MOD             reduce using rule 50 (factor -> NUMBER .)
-    AND             reduce using rule 50 (factor -> NUMBER .)
-    OR              reduce using rule 50 (factor -> NUMBER .)
-    XOR             reduce using rule 50 (factor -> NUMBER .)
-    LESSER          reduce using rule 50 (factor -> NUMBER .)
-    GREATER         reduce using rule 50 (factor -> NUMBER .)
-    EQUAL           reduce using rule 50 (factor -> NUMBER .)
-    LESSER_EQ       reduce using rule 50 (factor -> NUMBER .)
-    GREATER_EQ      reduce using rule 50 (factor -> NUMBER .)
-    N_EQUAL         reduce using rule 50 (factor -> NUMBER .)
-    CLOSE_BRACKET   reduce using rule 50 (factor -> NUMBER .)
-    PLUS            reduce using rule 50 (factor -> NUMBER .)
-    MINUS           reduce using rule 50 (factor -> NUMBER .)
-    NOT             reduce using rule 50 (factor -> NUMBER .)
-    ID              reduce using rule 50 (factor -> NUMBER .)
-    NUMBER          reduce using rule 50 (factor -> NUMBER .)
-    OPEN_BRACKET    reduce using rule 50 (factor -> NUMBER .)
-    END             reduce using rule 50 (factor -> NUMBER .)
-    INT             reduce using rule 50 (factor -> NUMBER .)
-    STRING          reduce using rule 50 (factor -> NUMBER .)
-    IF              reduce using rule 50 (factor -> NUMBER .)
-    COMMENT         reduce using rule 50 (factor -> NUMBER .)
-    PRINT           reduce using rule 50 (factor -> NUMBER .)
-    LOOP            reduce using rule 50 (factor -> NUMBER .)
-    FUNCTION        reduce using rule 50 (factor -> NUMBER .)
-    LIST            reduce using rule 50 (factor -> NUMBER .)
-    ELSE            reduce using rule 50 (factor -> NUMBER .)
-    RETURN          reduce using rule 50 (factor -> NUMBER .)
+    ENDLINE         shift and go to state 59
 
 
 state 41
 
-    (51) factor -> brac_expr .
+    (23) var_assign -> ID ASSIGN STRING_EXPR . ENDLINE
 
-    ENDLINE         reduce using rule 51 (factor -> brac_expr .)
-    MULT            reduce using rule 51 (factor -> brac_expr .)
-    DIV             reduce using rule 51 (factor -> brac_expr .)
-    MOD             reduce using rule 51 (factor -> brac_expr .)
-    AND             reduce using rule 51 (factor -> brac_expr .)
-    OR              reduce using rule 51 (factor -> brac_expr .)
-    XOR             reduce using rule 51 (factor -> brac_expr .)
-    LESSER          reduce using rule 51 (factor -> brac_expr .)
-    GREATER         reduce using rule 51 (factor -> brac_expr .)
-    EQUAL           reduce using rule 51 (factor -> brac_expr .)
-    LESSER_EQ       reduce using rule 51 (factor -> brac_expr .)
-    GREATER_EQ      reduce using rule 51 (factor -> brac_expr .)
-    N_EQUAL         reduce using rule 51 (factor -> brac_expr .)
-    CLOSE_BRACKET   reduce using rule 51 (factor -> brac_expr .)
-    PLUS            reduce using rule 51 (factor -> brac_expr .)
-    MINUS           reduce using rule 51 (factor -> brac_expr .)
-    NOT             reduce using rule 51 (factor -> brac_expr .)
-    ID              reduce using rule 51 (factor -> brac_expr .)
-    NUMBER          reduce using rule 51 (factor -> brac_expr .)
-    OPEN_BRACKET    reduce using rule 51 (factor -> brac_expr .)
-    END             reduce using rule 51 (factor -> brac_expr .)
-    INT             reduce using rule 51 (factor -> brac_expr .)
-    STRING          reduce using rule 51 (factor -> brac_expr .)
-    IF              reduce using rule 51 (factor -> brac_expr .)
-    COMMENT         reduce using rule 51 (factor -> brac_expr .)
-    PRINT           reduce using rule 51 (factor -> brac_expr .)
-    LOOP            reduce using rule 51 (factor -> brac_expr .)
-    FUNCTION        reduce using rule 51 (factor -> brac_expr .)
-    LIST            reduce using rule 51 (factor -> brac_expr .)
-    ELSE            reduce using rule 51 (factor -> brac_expr .)
-    RETURN          reduce using rule 51 (factor -> brac_expr .)
+    ENDLINE         shift and go to state 60
 
 
 state 42
 
-    (52) factor -> func_call .
+    (55) factor_n -> NOT . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    ENDLINE         reduce using rule 52 (factor -> func_call .)
-    MULT            reduce using rule 52 (factor -> func_call .)
-    DIV             reduce using rule 52 (factor -> func_call .)
-    MOD             reduce using rule 52 (factor -> func_call .)
-    AND             reduce using rule 52 (factor -> func_call .)
-    OR              reduce using rule 52 (factor -> func_call .)
-    XOR             reduce using rule 52 (factor -> func_call .)
-    LESSER          reduce using rule 52 (factor -> func_call .)
-    GREATER         reduce using rule 52 (factor -> func_call .)
-    EQUAL           reduce using rule 52 (factor -> func_call .)
-    LESSER_EQ       reduce using rule 52 (factor -> func_call .)
-    GREATER_EQ      reduce using rule 52 (factor -> func_call .)
-    N_EQUAL         reduce using rule 52 (factor -> func_call .)
-    CLOSE_BRACKET   reduce using rule 52 (factor -> func_call .)
-    PLUS            reduce using rule 52 (factor -> func_call .)
-    MINUS           reduce using rule 52 (factor -> func_call .)
-    NOT             reduce using rule 52 (factor -> func_call .)
-    ID              reduce using rule 52 (factor -> func_call .)
-    NUMBER          reduce using rule 52 (factor -> func_call .)
-    OPEN_BRACKET    reduce using rule 52 (factor -> func_call .)
-    END             reduce using rule 52 (factor -> func_call .)
-    INT             reduce using rule 52 (factor -> func_call .)
-    STRING          reduce using rule 52 (factor -> func_call .)
-    IF              reduce using rule 52 (factor -> func_call .)
-    COMMENT         reduce using rule 52 (factor -> func_call .)
-    PRINT           reduce using rule 52 (factor -> func_call .)
-    LOOP            reduce using rule 52 (factor -> func_call .)
-    FUNCTION        reduce using rule 52 (factor -> func_call .)
-    LIST            reduce using rule 52 (factor -> func_call .)
-    ELSE            reduce using rule 52 (factor -> func_call .)
-    RETURN          reduce using rule 52 (factor -> func_call .)
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    factor                         shift and go to state 61
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 43
 
-    (34) brac_expr -> OPEN_BRACKET . expr CLOSE_BRACKET
-    (32) expr -> . expr oper_add comp
-    (33) expr -> . comp
-    (57) comp -> . comp oper_mult factor_n
-    (58) comp -> . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (56) factor_n -> factor .
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    ENDLINE         reduce using rule 56 (factor_n -> factor .)
+    MULT            reduce using rule 56 (factor_n -> factor .)
+    DIV             reduce using rule 56 (factor_n -> factor .)
+    MOD             reduce using rule 56 (factor_n -> factor .)
+    AND             reduce using rule 56 (factor_n -> factor .)
+    OR              reduce using rule 56 (factor_n -> factor .)
+    XOR             reduce using rule 56 (factor_n -> factor .)
+    LESSER          reduce using rule 56 (factor_n -> factor .)
+    GREATER         reduce using rule 56 (factor_n -> factor .)
+    EQUAL           reduce using rule 56 (factor_n -> factor .)
+    LESSER_EQ       reduce using rule 56 (factor_n -> factor .)
+    GREATER_EQ      reduce using rule 56 (factor_n -> factor .)
+    N_EQUAL         reduce using rule 56 (factor_n -> factor .)
+    CLOSE_BRACKET   reduce using rule 56 (factor_n -> factor .)
+    PLUS            reduce using rule 56 (factor_n -> factor .)
+    MINUS           reduce using rule 56 (factor_n -> factor .)
+    NOT             reduce using rule 56 (factor_n -> factor .)
+    ID              reduce using rule 56 (factor_n -> factor .)
+    NUMBER          reduce using rule 56 (factor_n -> factor .)
+    OPEN_BRACKET    reduce using rule 56 (factor_n -> factor .)
+    END             reduce using rule 56 (factor_n -> factor .)
+    INT             reduce using rule 56 (factor_n -> factor .)
+    STRING          reduce using rule 56 (factor_n -> factor .)
+    IF              reduce using rule 56 (factor_n -> factor .)
+    COMMENT         reduce using rule 56 (factor_n -> factor .)
+    PRINT           reduce using rule 56 (factor_n -> factor .)
+    LOOP            reduce using rule 56 (factor_n -> factor .)
+    FUNCTION        reduce using rule 56 (factor_n -> factor .)
+    LIST            reduce using rule 56 (factor_n -> factor .)
+    ELSE            reduce using rule 56 (factor_n -> factor .)
+    RETURN          reduce using rule 56 (factor_n -> factor .)
 
-    expr                           shift and go to state 57
-    comp                           shift and go to state 46
-    factor_n                       shift and go to state 47
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 44
 
-    (19) var_decl -> STRING ID ASSIGN . STRING_EXPR ENDLINE
+    (52) factor -> NUMBER .
 
-    STRING_EXPR     shift and go to state 58
+    ENDLINE         reduce using rule 52 (factor -> NUMBER .)
+    MULT            reduce using rule 52 (factor -> NUMBER .)
+    DIV             reduce using rule 52 (factor -> NUMBER .)
+    MOD             reduce using rule 52 (factor -> NUMBER .)
+    AND             reduce using rule 52 (factor -> NUMBER .)
+    OR              reduce using rule 52 (factor -> NUMBER .)
+    XOR             reduce using rule 52 (factor -> NUMBER .)
+    LESSER          reduce using rule 52 (factor -> NUMBER .)
+    GREATER         reduce using rule 52 (factor -> NUMBER .)
+    EQUAL           reduce using rule 52 (factor -> NUMBER .)
+    LESSER_EQ       reduce using rule 52 (factor -> NUMBER .)
+    GREATER_EQ      reduce using rule 52 (factor -> NUMBER .)
+    N_EQUAL         reduce using rule 52 (factor -> NUMBER .)
+    CLOSE_BRACKET   reduce using rule 52 (factor -> NUMBER .)
+    PLUS            reduce using rule 52 (factor -> NUMBER .)
+    MINUS           reduce using rule 52 (factor -> NUMBER .)
+    NOT             reduce using rule 52 (factor -> NUMBER .)
+    ID              reduce using rule 52 (factor -> NUMBER .)
+    NUMBER          reduce using rule 52 (factor -> NUMBER .)
+    OPEN_BRACKET    reduce using rule 52 (factor -> NUMBER .)
+    END             reduce using rule 52 (factor -> NUMBER .)
+    INT             reduce using rule 52 (factor -> NUMBER .)
+    STRING          reduce using rule 52 (factor -> NUMBER .)
+    IF              reduce using rule 52 (factor -> NUMBER .)
+    COMMENT         reduce using rule 52 (factor -> NUMBER .)
+    PRINT           reduce using rule 52 (factor -> NUMBER .)
+    LOOP            reduce using rule 52 (factor -> NUMBER .)
+    FUNCTION        reduce using rule 52 (factor -> NUMBER .)
+    LIST            reduce using rule 52 (factor -> NUMBER .)
+    ELSE            reduce using rule 52 (factor -> NUMBER .)
+    RETURN          reduce using rule 52 (factor -> NUMBER .)
 
 
 state 45
 
-    (28) if_stat -> IF OPEN_BRACKET expr . CLOSE_BRACKET THEN lines end_if
-    (32) expr -> expr . oper_add comp
-    (35) oper_add -> . PLUS
-    (36) oper_add -> . MINUS
+    (53) factor -> brac_expr .
 
-    CLOSE_BRACKET   shift and go to state 59
-    PLUS            shift and go to state 61
-    MINUS           shift and go to state 62
+    ENDLINE         reduce using rule 53 (factor -> brac_expr .)
+    MULT            reduce using rule 53 (factor -> brac_expr .)
+    DIV             reduce using rule 53 (factor -> brac_expr .)
+    MOD             reduce using rule 53 (factor -> brac_expr .)
+    AND             reduce using rule 53 (factor -> brac_expr .)
+    OR              reduce using rule 53 (factor -> brac_expr .)
+    XOR             reduce using rule 53 (factor -> brac_expr .)
+    LESSER          reduce using rule 53 (factor -> brac_expr .)
+    GREATER         reduce using rule 53 (factor -> brac_expr .)
+    EQUAL           reduce using rule 53 (factor -> brac_expr .)
+    LESSER_EQ       reduce using rule 53 (factor -> brac_expr .)
+    GREATER_EQ      reduce using rule 53 (factor -> brac_expr .)
+    N_EQUAL         reduce using rule 53 (factor -> brac_expr .)
+    CLOSE_BRACKET   reduce using rule 53 (factor -> brac_expr .)
+    PLUS            reduce using rule 53 (factor -> brac_expr .)
+    MINUS           reduce using rule 53 (factor -> brac_expr .)
+    NOT             reduce using rule 53 (factor -> brac_expr .)
+    ID              reduce using rule 53 (factor -> brac_expr .)
+    NUMBER          reduce using rule 53 (factor -> brac_expr .)
+    OPEN_BRACKET    reduce using rule 53 (factor -> brac_expr .)
+    END             reduce using rule 53 (factor -> brac_expr .)
+    INT             reduce using rule 53 (factor -> brac_expr .)
+    STRING          reduce using rule 53 (factor -> brac_expr .)
+    IF              reduce using rule 53 (factor -> brac_expr .)
+    COMMENT         reduce using rule 53 (factor -> brac_expr .)
+    PRINT           reduce using rule 53 (factor -> brac_expr .)
+    LOOP            reduce using rule 53 (factor -> brac_expr .)
+    FUNCTION        reduce using rule 53 (factor -> brac_expr .)
+    LIST            reduce using rule 53 (factor -> brac_expr .)
+    ELSE            reduce using rule 53 (factor -> brac_expr .)
+    RETURN          reduce using rule 53 (factor -> brac_expr .)
 
-    oper_add                       shift and go to state 60
 
 state 46
 
-    (33) expr -> comp .
-    (57) comp -> comp . oper_mult factor_n
-    (37) oper_mult -> . MULT
-    (38) oper_mult -> . DIV
-    (39) oper_mult -> . MOD
-    (40) oper_mult -> . AND
-    (41) oper_mult -> . OR
-    (42) oper_mult -> . XOR
-    (43) oper_mult -> . LESSER
-    (44) oper_mult -> . GREATER
-    (45) oper_mult -> . EQUAL
-    (46) oper_mult -> . LESSER_EQ
-    (47) oper_mult -> . GREATER_EQ
-    (48) oper_mult -> . N_EQUAL
+    (54) factor -> func_call .
 
-    CLOSE_BRACKET   reduce using rule 33 (expr -> comp .)
-    PLUS            reduce using rule 33 (expr -> comp .)
-    MINUS           reduce using rule 33 (expr -> comp .)
-    MULT            shift and go to state 64
-    DIV             shift and go to state 65
-    MOD             shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-    XOR             shift and go to state 69
-    LESSER          shift and go to state 70
-    GREATER         shift and go to state 71
-    EQUAL           shift and go to state 72
-    LESSER_EQ       shift and go to state 73
-    GREATER_EQ      shift and go to state 74
-    N_EQUAL         shift and go to state 75
+    ENDLINE         reduce using rule 54 (factor -> func_call .)
+    MULT            reduce using rule 54 (factor -> func_call .)
+    DIV             reduce using rule 54 (factor -> func_call .)
+    MOD             reduce using rule 54 (factor -> func_call .)
+    AND             reduce using rule 54 (factor -> func_call .)
+    OR              reduce using rule 54 (factor -> func_call .)
+    XOR             reduce using rule 54 (factor -> func_call .)
+    LESSER          reduce using rule 54 (factor -> func_call .)
+    GREATER         reduce using rule 54 (factor -> func_call .)
+    EQUAL           reduce using rule 54 (factor -> func_call .)
+    LESSER_EQ       reduce using rule 54 (factor -> func_call .)
+    GREATER_EQ      reduce using rule 54 (factor -> func_call .)
+    N_EQUAL         reduce using rule 54 (factor -> func_call .)
+    CLOSE_BRACKET   reduce using rule 54 (factor -> func_call .)
+    PLUS            reduce using rule 54 (factor -> func_call .)
+    MINUS           reduce using rule 54 (factor -> func_call .)
+    NOT             reduce using rule 54 (factor -> func_call .)
+    ID              reduce using rule 54 (factor -> func_call .)
+    NUMBER          reduce using rule 54 (factor -> func_call .)
+    OPEN_BRACKET    reduce using rule 54 (factor -> func_call .)
+    END             reduce using rule 54 (factor -> func_call .)
+    INT             reduce using rule 54 (factor -> func_call .)
+    STRING          reduce using rule 54 (factor -> func_call .)
+    IF              reduce using rule 54 (factor -> func_call .)
+    COMMENT         reduce using rule 54 (factor -> func_call .)
+    PRINT           reduce using rule 54 (factor -> func_call .)
+    LOOP            reduce using rule 54 (factor -> func_call .)
+    FUNCTION        reduce using rule 54 (factor -> func_call .)
+    LIST            reduce using rule 54 (factor -> func_call .)
+    ELSE            reduce using rule 54 (factor -> func_call .)
+    RETURN          reduce using rule 54 (factor -> func_call .)
 
-    oper_mult                      shift and go to state 63
 
 state 47
 
-    (58) comp -> factor_n .
+    (36) brac_expr -> OPEN_BRACKET . expr CLOSE_BRACKET
+    (34) expr -> . expr oper_add comp
+    (35) expr -> . comp
+    (59) comp -> . comp oper_mult factor_n
+    (60) comp -> . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    MULT            reduce using rule 58 (comp -> factor_n .)
-    DIV             reduce using rule 58 (comp -> factor_n .)
-    MOD             reduce using rule 58 (comp -> factor_n .)
-    AND             reduce using rule 58 (comp -> factor_n .)
-    OR              reduce using rule 58 (comp -> factor_n .)
-    XOR             reduce using rule 58 (comp -> factor_n .)
-    LESSER          reduce using rule 58 (comp -> factor_n .)
-    GREATER         reduce using rule 58 (comp -> factor_n .)
-    EQUAL           reduce using rule 58 (comp -> factor_n .)
-    LESSER_EQ       reduce using rule 58 (comp -> factor_n .)
-    GREATER_EQ      reduce using rule 58 (comp -> factor_n .)
-    N_EQUAL         reduce using rule 58 (comp -> factor_n .)
-    CLOSE_BRACKET   reduce using rule 58 (comp -> factor_n .)
-    PLUS            reduce using rule 58 (comp -> factor_n .)
-    MINUS           reduce using rule 58 (comp -> factor_n .)
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    expr                           shift and go to state 62
+    comp                           shift and go to state 51
+    factor_n                       shift and go to state 52
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 48
 
-    (15) print -> PRINT OPEN_BRACKET expr . CLOSE_BRACKET ENDLINE
-    (32) expr -> expr . oper_add comp
-    (35) oper_add -> . PLUS
-    (36) oper_add -> . MINUS
+    (18) table_assign -> ID OPEN_SQ_BRACKET NUMBER . CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    CLOSE_BRACKET   shift and go to state 76
-    PLUS            shift and go to state 61
-    MINUS           shift and go to state 62
+    CLOSE_SQ_BRACKET shift and go to state 63
 
-    oper_add                       shift and go to state 60
 
 state 49
 
-    (14) loop -> LOOP OPEN_BRACKET expr . CLOSE_BRACKET BEGIN lines END
-    (32) expr -> expr . oper_add comp
-    (35) oper_add -> . PLUS
-    (36) oper_add -> . MINUS
+    (21) var_decl -> STRING ID ASSIGN . STRING_EXPR ENDLINE
 
-    CLOSE_BRACKET   shift and go to state 77
-    PLUS            shift and go to state 61
-    MINUS           shift and go to state 62
+    STRING_EXPR     shift and go to state 64
 
-    oper_add                       shift and go to state 60
 
 state 50
 
-    (17) func_decl -> FUNCTION ID OPEN_BRACKET . args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (26) args -> . args arg
-    (27) args -> . arg
-    (25) arg -> . type ID
-    (22) type -> . INT
-    (23) type -> . STRING
+    (30) if_stat -> IF OPEN_BRACKET expr . CLOSE_BRACKET THEN lines end_if
+    (34) expr -> expr . oper_add comp
+    (37) oper_add -> . PLUS
+    (38) oper_add -> . MINUS
 
-    INT             shift and go to state 81
-    STRING          shift and go to state 82
+    CLOSE_BRACKET   shift and go to state 65
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
 
-    args                           shift and go to state 78
-    arg                            shift and go to state 79
-    type                           shift and go to state 80
+    oper_add                       shift and go to state 66
 
 state 51
 
-    (16) table_decl -> LIST ID NUMBER . ENDLINE
+    (35) expr -> comp .
+    (59) comp -> comp . oper_mult factor_n
+    (39) oper_mult -> . MULT
+    (40) oper_mult -> . DIV
+    (41) oper_mult -> . MOD
+    (42) oper_mult -> . AND
+    (43) oper_mult -> . OR
+    (44) oper_mult -> . XOR
+    (45) oper_mult -> . LESSER
+    (46) oper_mult -> . GREATER
+    (47) oper_mult -> . EQUAL
+    (48) oper_mult -> . LESSER_EQ
+    (49) oper_mult -> . GREATER_EQ
+    (50) oper_mult -> . N_EQUAL
 
-    ENDLINE         shift and go to state 83
+    CLOSE_BRACKET   reduce using rule 35 (expr -> comp .)
+    PLUS            reduce using rule 35 (expr -> comp .)
+    MINUS           reduce using rule 35 (expr -> comp .)
+    MULT            shift and go to state 70
+    DIV             shift and go to state 71
+    MOD             shift and go to state 72
+    AND             shift and go to state 73
+    OR              shift and go to state 74
+    XOR             shift and go to state 75
+    LESSER          shift and go to state 76
+    GREATER         shift and go to state 77
+    EQUAL           shift and go to state 78
+    LESSER_EQ       shift and go to state 79
+    GREATER_EQ      shift and go to state 80
+    N_EQUAL         shift and go to state 81
 
+    oper_mult                      shift and go to state 69
 
 state 52
 
-    (18) var_decl -> INT ID ASSIGN factor_n . ENDLINE
+    (60) comp -> factor_n .
 
-    ENDLINE         shift and go to state 84
+    MULT            reduce using rule 60 (comp -> factor_n .)
+    DIV             reduce using rule 60 (comp -> factor_n .)
+    MOD             reduce using rule 60 (comp -> factor_n .)
+    AND             reduce using rule 60 (comp -> factor_n .)
+    OR              reduce using rule 60 (comp -> factor_n .)
+    XOR             reduce using rule 60 (comp -> factor_n .)
+    LESSER          reduce using rule 60 (comp -> factor_n .)
+    GREATER         reduce using rule 60 (comp -> factor_n .)
+    EQUAL           reduce using rule 60 (comp -> factor_n .)
+    LESSER_EQ       reduce using rule 60 (comp -> factor_n .)
+    GREATER_EQ      reduce using rule 60 (comp -> factor_n .)
+    N_EQUAL         reduce using rule 60 (comp -> factor_n .)
+    CLOSE_BRACKET   reduce using rule 60 (comp -> factor_n .)
+    PLUS            reduce using rule 60 (comp -> factor_n .)
+    MINUS           reduce using rule 60 (comp -> factor_n .)
 
 
 state 53
 
-    (24) func_call -> ID OPEN_BRACKET . factors_n CLOSE_BRACKET
-    (55) factors_n -> . factor_n
-    (56) factors_n -> . factors_n factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (16) print -> PRINT OPEN_BRACKET expr . CLOSE_BRACKET ENDLINE
+    (34) expr -> expr . oper_add comp
+    (37) oper_add -> . PLUS
+    (38) oper_add -> . MINUS
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    CLOSE_BRACKET   shift and go to state 82
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
 
-    factors_n                      shift and go to state 85
-    factor_n                       shift and go to state 86
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
+    oper_add                       shift and go to state 66
 
 state 54
 
-    (20) var_assign -> ID ASSIGN factor_n ENDLINE .
+    (15) loop -> LOOP OPEN_BRACKET expr . CLOSE_BRACKET BEGIN lines END
+    (34) expr -> expr . oper_add comp
+    (37) oper_add -> . PLUS
+    (38) oper_add -> . MINUS
 
-    END             reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    INT             reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    STRING          reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    ID              reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    IF              reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    COMMENT         reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    PRINT           reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    LOOP            reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    FUNCTION        reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    LIST            reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    ELSE            reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
-    RETURN          reduce using rule 20 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    CLOSE_BRACKET   shift and go to state 83
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
 
+    oper_add                       shift and go to state 66
 
 state 55
 
-    (21) var_assign -> ID ASSIGN STRING_EXPR ENDLINE .
+    (19) func_decl -> FUNCTION ID OPEN_BRACKET . args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (28) args -> . args arg
+    (29) args -> . arg
+    (27) arg -> . type ID
+    (24) type -> . INT
+    (25) type -> . STRING
 
-    END             reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    INT             reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    STRING          reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    ID              reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    IF              reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    COMMENT         reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    PRINT           reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    LOOP            reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    FUNCTION        reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    LIST            reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    ELSE            reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
-    RETURN          reduce using rule 21 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    INT             shift and go to state 36
+    STRING          shift and go to state 37
 
+    args                           shift and go to state 84
+    arg                            shift and go to state 85
+    type                           shift and go to state 86
 
 state 56
 
-    (53) factor_n -> NOT factor .
+    (17) table_decl -> LIST type NUMBER . ID ENDLINE
 
-    ENDLINE         reduce using rule 53 (factor_n -> NOT factor .)
-    MULT            reduce using rule 53 (factor_n -> NOT factor .)
-    DIV             reduce using rule 53 (factor_n -> NOT factor .)
-    MOD             reduce using rule 53 (factor_n -> NOT factor .)
-    AND             reduce using rule 53 (factor_n -> NOT factor .)
-    OR              reduce using rule 53 (factor_n -> NOT factor .)
-    XOR             reduce using rule 53 (factor_n -> NOT factor .)
-    LESSER          reduce using rule 53 (factor_n -> NOT factor .)
-    GREATER         reduce using rule 53 (factor_n -> NOT factor .)
-    EQUAL           reduce using rule 53 (factor_n -> NOT factor .)
-    LESSER_EQ       reduce using rule 53 (factor_n -> NOT factor .)
-    GREATER_EQ      reduce using rule 53 (factor_n -> NOT factor .)
-    N_EQUAL         reduce using rule 53 (factor_n -> NOT factor .)
-    CLOSE_BRACKET   reduce using rule 53 (factor_n -> NOT factor .)
-    PLUS            reduce using rule 53 (factor_n -> NOT factor .)
-    MINUS           reduce using rule 53 (factor_n -> NOT factor .)
-    NOT             reduce using rule 53 (factor_n -> NOT factor .)
-    ID              reduce using rule 53 (factor_n -> NOT factor .)
-    NUMBER          reduce using rule 53 (factor_n -> NOT factor .)
-    OPEN_BRACKET    reduce using rule 53 (factor_n -> NOT factor .)
-    END             reduce using rule 53 (factor_n -> NOT factor .)
-    INT             reduce using rule 53 (factor_n -> NOT factor .)
-    STRING          reduce using rule 53 (factor_n -> NOT factor .)
-    IF              reduce using rule 53 (factor_n -> NOT factor .)
-    COMMENT         reduce using rule 53 (factor_n -> NOT factor .)
-    PRINT           reduce using rule 53 (factor_n -> NOT factor .)
-    LOOP            reduce using rule 53 (factor_n -> NOT factor .)
-    FUNCTION        reduce using rule 53 (factor_n -> NOT factor .)
-    LIST            reduce using rule 53 (factor_n -> NOT factor .)
-    ELSE            reduce using rule 53 (factor_n -> NOT factor .)
-    RETURN          reduce using rule 53 (factor_n -> NOT factor .)
+    ID              shift and go to state 87
 
 
 state 57
 
-    (34) brac_expr -> OPEN_BRACKET expr . CLOSE_BRACKET
-    (32) expr -> expr . oper_add comp
-    (35) oper_add -> . PLUS
-    (36) oper_add -> . MINUS
-
-    CLOSE_BRACKET   shift and go to state 87
-    PLUS            shift and go to state 61
-    MINUS           shift and go to state 62
-
-    oper_add                       shift and go to state 60
-
-state 58
-
-    (19) var_decl -> STRING ID ASSIGN STRING_EXPR . ENDLINE
+    (20) var_decl -> INT ID ASSIGN factor_n . ENDLINE
 
     ENDLINE         shift and go to state 88
 
 
+state 58
+
+    (26) func_call -> ID OPEN_BRACKET . factors_n CLOSE_BRACKET
+    (57) factors_n -> . factor_n
+    (58) factors_n -> . factors_n factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
+
+    factors_n                      shift and go to state 89
+    factor_n                       shift and go to state 90
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
+
 state 59
 
-    (28) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET . THEN lines end_if
+    (22) var_assign -> ID ASSIGN factor_n ENDLINE .
 
-    THEN            shift and go to state 89
+    END             reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    INT             reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    STRING          reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    ID              reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    IF              reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    COMMENT         reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    PRINT           reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    LOOP            reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    FUNCTION        reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    LIST            reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    ELSE            reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
+    RETURN          reduce using rule 22 (var_assign -> ID ASSIGN factor_n ENDLINE .)
 
 
 state 60
 
-    (32) expr -> expr oper_add . comp
-    (57) comp -> . comp oper_mult factor_n
-    (58) comp -> . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (23) var_assign -> ID ASSIGN STRING_EXPR ENDLINE .
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    END             reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    INT             reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    STRING          reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    ID              reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    IF              reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    COMMENT         reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    PRINT           reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    LOOP            reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    FUNCTION        reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    LIST            reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    ELSE            reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
+    RETURN          reduce using rule 23 (var_assign -> ID ASSIGN STRING_EXPR ENDLINE .)
 
-    comp                           shift and go to state 90
-    factor_n                       shift and go to state 47
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 61
 
-    (35) oper_add -> PLUS .
+    (55) factor_n -> NOT factor .
 
-    NOT             reduce using rule 35 (oper_add -> PLUS .)
-    ID              reduce using rule 35 (oper_add -> PLUS .)
-    NUMBER          reduce using rule 35 (oper_add -> PLUS .)
-    OPEN_BRACKET    reduce using rule 35 (oper_add -> PLUS .)
+    ENDLINE         reduce using rule 55 (factor_n -> NOT factor .)
+    MULT            reduce using rule 55 (factor_n -> NOT factor .)
+    DIV             reduce using rule 55 (factor_n -> NOT factor .)
+    MOD             reduce using rule 55 (factor_n -> NOT factor .)
+    AND             reduce using rule 55 (factor_n -> NOT factor .)
+    OR              reduce using rule 55 (factor_n -> NOT factor .)
+    XOR             reduce using rule 55 (factor_n -> NOT factor .)
+    LESSER          reduce using rule 55 (factor_n -> NOT factor .)
+    GREATER         reduce using rule 55 (factor_n -> NOT factor .)
+    EQUAL           reduce using rule 55 (factor_n -> NOT factor .)
+    LESSER_EQ       reduce using rule 55 (factor_n -> NOT factor .)
+    GREATER_EQ      reduce using rule 55 (factor_n -> NOT factor .)
+    N_EQUAL         reduce using rule 55 (factor_n -> NOT factor .)
+    CLOSE_BRACKET   reduce using rule 55 (factor_n -> NOT factor .)
+    PLUS            reduce using rule 55 (factor_n -> NOT factor .)
+    MINUS           reduce using rule 55 (factor_n -> NOT factor .)
+    NOT             reduce using rule 55 (factor_n -> NOT factor .)
+    ID              reduce using rule 55 (factor_n -> NOT factor .)
+    NUMBER          reduce using rule 55 (factor_n -> NOT factor .)
+    OPEN_BRACKET    reduce using rule 55 (factor_n -> NOT factor .)
+    END             reduce using rule 55 (factor_n -> NOT factor .)
+    INT             reduce using rule 55 (factor_n -> NOT factor .)
+    STRING          reduce using rule 55 (factor_n -> NOT factor .)
+    IF              reduce using rule 55 (factor_n -> NOT factor .)
+    COMMENT         reduce using rule 55 (factor_n -> NOT factor .)
+    PRINT           reduce using rule 55 (factor_n -> NOT factor .)
+    LOOP            reduce using rule 55 (factor_n -> NOT factor .)
+    FUNCTION        reduce using rule 55 (factor_n -> NOT factor .)
+    LIST            reduce using rule 55 (factor_n -> NOT factor .)
+    ELSE            reduce using rule 55 (factor_n -> NOT factor .)
+    RETURN          reduce using rule 55 (factor_n -> NOT factor .)
 
 
 state 62
 
-    (36) oper_add -> MINUS .
+    (36) brac_expr -> OPEN_BRACKET expr . CLOSE_BRACKET
+    (34) expr -> expr . oper_add comp
+    (37) oper_add -> . PLUS
+    (38) oper_add -> . MINUS
 
-    NOT             reduce using rule 36 (oper_add -> MINUS .)
-    ID              reduce using rule 36 (oper_add -> MINUS .)
-    NUMBER          reduce using rule 36 (oper_add -> MINUS .)
-    OPEN_BRACKET    reduce using rule 36 (oper_add -> MINUS .)
+    CLOSE_BRACKET   shift and go to state 91
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
 
+    oper_add                       shift and go to state 66
 
 state 63
 
-    (57) comp -> comp oper_mult . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (18) table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET . ASSIGN factor_n ENDLINE
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    ASSIGN          shift and go to state 92
 
-    factor_n                       shift and go to state 91
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 64
 
-    (37) oper_mult -> MULT .
+    (21) var_decl -> STRING ID ASSIGN STRING_EXPR . ENDLINE
 
-    NOT             reduce using rule 37 (oper_mult -> MULT .)
-    ID              reduce using rule 37 (oper_mult -> MULT .)
-    NUMBER          reduce using rule 37 (oper_mult -> MULT .)
-    OPEN_BRACKET    reduce using rule 37 (oper_mult -> MULT .)
+    ENDLINE         shift and go to state 93
 
 
 state 65
 
-    (38) oper_mult -> DIV .
+    (30) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET . THEN lines end_if
 
-    NOT             reduce using rule 38 (oper_mult -> DIV .)
-    ID              reduce using rule 38 (oper_mult -> DIV .)
-    NUMBER          reduce using rule 38 (oper_mult -> DIV .)
-    OPEN_BRACKET    reduce using rule 38 (oper_mult -> DIV .)
+    THEN            shift and go to state 94
 
 
 state 66
 
-    (39) oper_mult -> MOD .
+    (34) expr -> expr oper_add . comp
+    (59) comp -> . comp oper_mult factor_n
+    (60) comp -> . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    NOT             reduce using rule 39 (oper_mult -> MOD .)
-    ID              reduce using rule 39 (oper_mult -> MOD .)
-    NUMBER          reduce using rule 39 (oper_mult -> MOD .)
-    OPEN_BRACKET    reduce using rule 39 (oper_mult -> MOD .)
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    comp                           shift and go to state 95
+    factor_n                       shift and go to state 52
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 67
 
-    (40) oper_mult -> AND .
+    (37) oper_add -> PLUS .
 
-    NOT             reduce using rule 40 (oper_mult -> AND .)
-    ID              reduce using rule 40 (oper_mult -> AND .)
-    NUMBER          reduce using rule 40 (oper_mult -> AND .)
-    OPEN_BRACKET    reduce using rule 40 (oper_mult -> AND .)
+    NOT             reduce using rule 37 (oper_add -> PLUS .)
+    ID              reduce using rule 37 (oper_add -> PLUS .)
+    NUMBER          reduce using rule 37 (oper_add -> PLUS .)
+    OPEN_BRACKET    reduce using rule 37 (oper_add -> PLUS .)
 
 
 state 68
 
-    (41) oper_mult -> OR .
+    (38) oper_add -> MINUS .
 
-    NOT             reduce using rule 41 (oper_mult -> OR .)
-    ID              reduce using rule 41 (oper_mult -> OR .)
-    NUMBER          reduce using rule 41 (oper_mult -> OR .)
-    OPEN_BRACKET    reduce using rule 41 (oper_mult -> OR .)
+    NOT             reduce using rule 38 (oper_add -> MINUS .)
+    ID              reduce using rule 38 (oper_add -> MINUS .)
+    NUMBER          reduce using rule 38 (oper_add -> MINUS .)
+    OPEN_BRACKET    reduce using rule 38 (oper_add -> MINUS .)
 
 
 state 69
 
-    (42) oper_mult -> XOR .
+    (59) comp -> comp oper_mult . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    NOT             reduce using rule 42 (oper_mult -> XOR .)
-    ID              reduce using rule 42 (oper_mult -> XOR .)
-    NUMBER          reduce using rule 42 (oper_mult -> XOR .)
-    OPEN_BRACKET    reduce using rule 42 (oper_mult -> XOR .)
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    factor_n                       shift and go to state 96
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 70
 
-    (43) oper_mult -> LESSER .
+    (39) oper_mult -> MULT .
 
-    NOT             reduce using rule 43 (oper_mult -> LESSER .)
-    ID              reduce using rule 43 (oper_mult -> LESSER .)
-    NUMBER          reduce using rule 43 (oper_mult -> LESSER .)
-    OPEN_BRACKET    reduce using rule 43 (oper_mult -> LESSER .)
+    NOT             reduce using rule 39 (oper_mult -> MULT .)
+    ID              reduce using rule 39 (oper_mult -> MULT .)
+    NUMBER          reduce using rule 39 (oper_mult -> MULT .)
+    OPEN_BRACKET    reduce using rule 39 (oper_mult -> MULT .)
 
 
 state 71
 
-    (44) oper_mult -> GREATER .
+    (40) oper_mult -> DIV .
 
-    NOT             reduce using rule 44 (oper_mult -> GREATER .)
-    ID              reduce using rule 44 (oper_mult -> GREATER .)
-    NUMBER          reduce using rule 44 (oper_mult -> GREATER .)
-    OPEN_BRACKET    reduce using rule 44 (oper_mult -> GREATER .)
+    NOT             reduce using rule 40 (oper_mult -> DIV .)
+    ID              reduce using rule 40 (oper_mult -> DIV .)
+    NUMBER          reduce using rule 40 (oper_mult -> DIV .)
+    OPEN_BRACKET    reduce using rule 40 (oper_mult -> DIV .)
 
 
 state 72
 
-    (45) oper_mult -> EQUAL .
+    (41) oper_mult -> MOD .
 
-    NOT             reduce using rule 45 (oper_mult -> EQUAL .)
-    ID              reduce using rule 45 (oper_mult -> EQUAL .)
-    NUMBER          reduce using rule 45 (oper_mult -> EQUAL .)
-    OPEN_BRACKET    reduce using rule 45 (oper_mult -> EQUAL .)
+    NOT             reduce using rule 41 (oper_mult -> MOD .)
+    ID              reduce using rule 41 (oper_mult -> MOD .)
+    NUMBER          reduce using rule 41 (oper_mult -> MOD .)
+    OPEN_BRACKET    reduce using rule 41 (oper_mult -> MOD .)
 
 
 state 73
 
-    (46) oper_mult -> LESSER_EQ .
+    (42) oper_mult -> AND .
 
-    NOT             reduce using rule 46 (oper_mult -> LESSER_EQ .)
-    ID              reduce using rule 46 (oper_mult -> LESSER_EQ .)
-    NUMBER          reduce using rule 46 (oper_mult -> LESSER_EQ .)
-    OPEN_BRACKET    reduce using rule 46 (oper_mult -> LESSER_EQ .)
+    NOT             reduce using rule 42 (oper_mult -> AND .)
+    ID              reduce using rule 42 (oper_mult -> AND .)
+    NUMBER          reduce using rule 42 (oper_mult -> AND .)
+    OPEN_BRACKET    reduce using rule 42 (oper_mult -> AND .)
 
 
 state 74
 
-    (47) oper_mult -> GREATER_EQ .
+    (43) oper_mult -> OR .
 
-    NOT             reduce using rule 47 (oper_mult -> GREATER_EQ .)
-    ID              reduce using rule 47 (oper_mult -> GREATER_EQ .)
-    NUMBER          reduce using rule 47 (oper_mult -> GREATER_EQ .)
-    OPEN_BRACKET    reduce using rule 47 (oper_mult -> GREATER_EQ .)
+    NOT             reduce using rule 43 (oper_mult -> OR .)
+    ID              reduce using rule 43 (oper_mult -> OR .)
+    NUMBER          reduce using rule 43 (oper_mult -> OR .)
+    OPEN_BRACKET    reduce using rule 43 (oper_mult -> OR .)
 
 
 state 75
 
-    (48) oper_mult -> N_EQUAL .
+    (44) oper_mult -> XOR .
 
-    NOT             reduce using rule 48 (oper_mult -> N_EQUAL .)
-    ID              reduce using rule 48 (oper_mult -> N_EQUAL .)
-    NUMBER          reduce using rule 48 (oper_mult -> N_EQUAL .)
-    OPEN_BRACKET    reduce using rule 48 (oper_mult -> N_EQUAL .)
+    NOT             reduce using rule 44 (oper_mult -> XOR .)
+    ID              reduce using rule 44 (oper_mult -> XOR .)
+    NUMBER          reduce using rule 44 (oper_mult -> XOR .)
+    OPEN_BRACKET    reduce using rule 44 (oper_mult -> XOR .)
 
 
 state 76
 
-    (15) print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET . ENDLINE
+    (45) oper_mult -> LESSER .
 
-    ENDLINE         shift and go to state 92
+    NOT             reduce using rule 45 (oper_mult -> LESSER .)
+    ID              reduce using rule 45 (oper_mult -> LESSER .)
+    NUMBER          reduce using rule 45 (oper_mult -> LESSER .)
+    OPEN_BRACKET    reduce using rule 45 (oper_mult -> LESSER .)
 
 
 state 77
 
-    (14) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET . BEGIN lines END
+    (46) oper_mult -> GREATER .
 
-    BEGIN           shift and go to state 93
+    NOT             reduce using rule 46 (oper_mult -> GREATER .)
+    ID              reduce using rule 46 (oper_mult -> GREATER .)
+    NUMBER          reduce using rule 46 (oper_mult -> GREATER .)
+    OPEN_BRACKET    reduce using rule 46 (oper_mult -> GREATER .)
 
 
 state 78
 
-    (17) func_decl -> FUNCTION ID OPEN_BRACKET args . CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (26) args -> args . arg
-    (25) arg -> . type ID
-    (22) type -> . INT
-    (23) type -> . STRING
+    (47) oper_mult -> EQUAL .
 
-    CLOSE_BRACKET   shift and go to state 94
-    INT             shift and go to state 81
-    STRING          shift and go to state 82
+    NOT             reduce using rule 47 (oper_mult -> EQUAL .)
+    ID              reduce using rule 47 (oper_mult -> EQUAL .)
+    NUMBER          reduce using rule 47 (oper_mult -> EQUAL .)
+    OPEN_BRACKET    reduce using rule 47 (oper_mult -> EQUAL .)
 
-    arg                            shift and go to state 95
-    type                           shift and go to state 80
 
 state 79
 
-    (27) args -> arg .
+    (48) oper_mult -> LESSER_EQ .
 
-    CLOSE_BRACKET   reduce using rule 27 (args -> arg .)
-    INT             reduce using rule 27 (args -> arg .)
-    STRING          reduce using rule 27 (args -> arg .)
+    NOT             reduce using rule 48 (oper_mult -> LESSER_EQ .)
+    ID              reduce using rule 48 (oper_mult -> LESSER_EQ .)
+    NUMBER          reduce using rule 48 (oper_mult -> LESSER_EQ .)
+    OPEN_BRACKET    reduce using rule 48 (oper_mult -> LESSER_EQ .)
 
 
 state 80
 
-    (25) arg -> type . ID
+    (49) oper_mult -> GREATER_EQ .
 
-    ID              shift and go to state 96
+    NOT             reduce using rule 49 (oper_mult -> GREATER_EQ .)
+    ID              reduce using rule 49 (oper_mult -> GREATER_EQ .)
+    NUMBER          reduce using rule 49 (oper_mult -> GREATER_EQ .)
+    OPEN_BRACKET    reduce using rule 49 (oper_mult -> GREATER_EQ .)
 
 
 state 81
 
-    (22) type -> INT .
+    (50) oper_mult -> N_EQUAL .
 
-    ID              reduce using rule 22 (type -> INT .)
+    NOT             reduce using rule 50 (oper_mult -> N_EQUAL .)
+    ID              reduce using rule 50 (oper_mult -> N_EQUAL .)
+    NUMBER          reduce using rule 50 (oper_mult -> N_EQUAL .)
+    OPEN_BRACKET    reduce using rule 50 (oper_mult -> N_EQUAL .)
 
 
 state 82
 
-    (23) type -> STRING .
+    (16) print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET . ENDLINE
 
-    ID              reduce using rule 23 (type -> STRING .)
+    ENDLINE         shift and go to state 97
 
 
 state 83
 
-    (16) table_decl -> LIST ID NUMBER ENDLINE .
+    (15) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET . BEGIN lines END
 
-    END             reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    INT             reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    STRING          reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    ID              reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    IF              reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    COMMENT         reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    PRINT           reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    LOOP            reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    FUNCTION        reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    LIST            reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    ELSE            reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
-    RETURN          reduce using rule 16 (table_decl -> LIST ID NUMBER ENDLINE .)
+    BEGIN           shift and go to state 98
 
 
 state 84
 
-    (18) var_decl -> INT ID ASSIGN factor_n ENDLINE .
+    (19) func_decl -> FUNCTION ID OPEN_BRACKET args . CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (28) args -> args . arg
+    (27) arg -> . type ID
+    (24) type -> . INT
+    (25) type -> . STRING
 
-    END             reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    INT             reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    STRING          reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    ID              reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    IF              reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    COMMENT         reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    PRINT           reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    LOOP            reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    FUNCTION        reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    LIST            reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    ELSE            reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
-    RETURN          reduce using rule 18 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    CLOSE_BRACKET   shift and go to state 99
+    INT             shift and go to state 36
+    STRING          shift and go to state 37
 
+    arg                            shift and go to state 100
+    type                           shift and go to state 86
 
 state 85
 
-    (24) func_call -> ID OPEN_BRACKET factors_n . CLOSE_BRACKET
-    (56) factors_n -> factors_n . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (29) args -> arg .
 
-    CLOSE_BRACKET   shift and go to state 97
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    CLOSE_BRACKET   reduce using rule 29 (args -> arg .)
+    INT             reduce using rule 29 (args -> arg .)
+    STRING          reduce using rule 29 (args -> arg .)
 
-    factor_n                       shift and go to state 98
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 86
 
-    (55) factors_n -> factor_n .
+    (27) arg -> type . ID
 
-    CLOSE_BRACKET   reduce using rule 55 (factors_n -> factor_n .)
-    NOT             reduce using rule 55 (factors_n -> factor_n .)
-    ID              reduce using rule 55 (factors_n -> factor_n .)
-    NUMBER          reduce using rule 55 (factors_n -> factor_n .)
-    OPEN_BRACKET    reduce using rule 55 (factors_n -> factor_n .)
+    ID              shift and go to state 101
 
 
 state 87
 
-    (34) brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .
+    (17) table_decl -> LIST type NUMBER ID . ENDLINE
 
-    ENDLINE         reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    MULT            reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    DIV             reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    MOD             reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    AND             reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    OR              reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    XOR             reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    LESSER          reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    GREATER         reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    EQUAL           reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    LESSER_EQ       reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    GREATER_EQ      reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    N_EQUAL         reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    CLOSE_BRACKET   reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    PLUS            reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    MINUS           reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    NOT             reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    ID              reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    NUMBER          reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    OPEN_BRACKET    reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    END             reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    INT             reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    STRING          reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    IF              reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    COMMENT         reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    PRINT           reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    LOOP            reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    FUNCTION        reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    LIST            reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    ELSE            reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
-    RETURN          reduce using rule 34 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    ENDLINE         shift and go to state 102
 
 
 state 88
 
-    (19) var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .
+    (20) var_decl -> INT ID ASSIGN factor_n ENDLINE .
 
-    END             reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    INT             reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    STRING          reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    ID              reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    IF              reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    COMMENT         reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    PRINT           reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    LOOP            reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    FUNCTION        reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    LIST            reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    ELSE            reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
-    RETURN          reduce using rule 19 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    END             reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    INT             reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    STRING          reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    ID              reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    IF              reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    COMMENT         reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    PRINT           reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    LOOP            reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    FUNCTION        reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    LIST            reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    ELSE            reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
+    RETURN          reduce using rule 20 (var_decl -> INT ID ASSIGN factor_n ENDLINE .)
 
 
 state 89
 
-    (28) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN . lines end_if
-    (4) lines -> . lines line
-    (5) lines -> . line
-    (6) line -> . var_decl
-    (7) line -> . var_assign
-    (8) line -> . if_stat
-    (9) line -> . comment
-    (10) line -> . print
-    (11) line -> . loop
-    (12) line -> . func_decl
-    (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
-    (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (26) func_call -> ID OPEN_BRACKET factors_n . CLOSE_BRACKET
+    (58) factors_n -> factors_n . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    CLOSE_BRACKET   shift and go to state 103
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
-    lines                          shift and go to state 99
-    line                           shift and go to state 6
-    var_decl                       shift and go to state 7
-    var_assign                     shift and go to state 8
-    if_stat                        shift and go to state 9
-    comment                        shift and go to state 10
-    print                          shift and go to state 11
-    loop                           shift and go to state 12
-    func_decl                      shift and go to state 13
-    table_decl                     shift and go to state 14
+    factor_n                       shift and go to state 104
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 90
 
-    (32) expr -> expr oper_add comp .
-    (57) comp -> comp . oper_mult factor_n
-    (37) oper_mult -> . MULT
-    (38) oper_mult -> . DIV
-    (39) oper_mult -> . MOD
-    (40) oper_mult -> . AND
-    (41) oper_mult -> . OR
-    (42) oper_mult -> . XOR
-    (43) oper_mult -> . LESSER
-    (44) oper_mult -> . GREATER
-    (45) oper_mult -> . EQUAL
-    (46) oper_mult -> . LESSER_EQ
-    (47) oper_mult -> . GREATER_EQ
-    (48) oper_mult -> . N_EQUAL
+    (57) factors_n -> factor_n .
 
-    CLOSE_BRACKET   reduce using rule 32 (expr -> expr oper_add comp .)
-    PLUS            reduce using rule 32 (expr -> expr oper_add comp .)
-    MINUS           reduce using rule 32 (expr -> expr oper_add comp .)
-    MULT            shift and go to state 64
-    DIV             shift and go to state 65
-    MOD             shift and go to state 66
-    AND             shift and go to state 67
-    OR              shift and go to state 68
-    XOR             shift and go to state 69
-    LESSER          shift and go to state 70
-    GREATER         shift and go to state 71
-    EQUAL           shift and go to state 72
-    LESSER_EQ       shift and go to state 73
-    GREATER_EQ      shift and go to state 74
-    N_EQUAL         shift and go to state 75
+    CLOSE_BRACKET   reduce using rule 57 (factors_n -> factor_n .)
+    NOT             reduce using rule 57 (factors_n -> factor_n .)
+    ID              reduce using rule 57 (factors_n -> factor_n .)
+    NUMBER          reduce using rule 57 (factors_n -> factor_n .)
+    OPEN_BRACKET    reduce using rule 57 (factors_n -> factor_n .)
 
-    oper_mult                      shift and go to state 63
 
 state 91
 
-    (57) comp -> comp oper_mult factor_n .
+    (36) brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .
 
-    MULT            reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    DIV             reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    MOD             reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    AND             reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    OR              reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    XOR             reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    LESSER          reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    GREATER         reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    EQUAL           reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    LESSER_EQ       reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    GREATER_EQ      reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    N_EQUAL         reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    CLOSE_BRACKET   reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    PLUS            reduce using rule 57 (comp -> comp oper_mult factor_n .)
-    MINUS           reduce using rule 57 (comp -> comp oper_mult factor_n .)
+    ENDLINE         reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    MULT            reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    DIV             reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    MOD             reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    AND             reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    OR              reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    XOR             reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    LESSER          reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    GREATER         reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    EQUAL           reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    LESSER_EQ       reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    GREATER_EQ      reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    N_EQUAL         reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    CLOSE_BRACKET   reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    PLUS            reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    MINUS           reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    NOT             reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    ID              reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    NUMBER          reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    OPEN_BRACKET    reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    END             reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    INT             reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    STRING          reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    IF              reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    COMMENT         reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    PRINT           reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    LOOP            reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    FUNCTION        reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    LIST            reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    ELSE            reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
+    RETURN          reduce using rule 36 (brac_expr -> OPEN_BRACKET expr CLOSE_BRACKET .)
 
 
 state 92
 
-    (15) print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .
+    (18) table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN . factor_n ENDLINE
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
 
-    END             reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    INT             reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    STRING          reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    ID              reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    IF              reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    COMMENT         reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    PRINT           reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    LOOP            reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    FUNCTION        reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    LIST            reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    ELSE            reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
-    RETURN          reduce using rule 15 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
 
+    factor_n                       shift and go to state 105
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
 
 state 93
 
-    (14) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN . lines END
+    (21) var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .
+
+    END             reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    INT             reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    STRING          reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    ID              reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    IF              reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    COMMENT         reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    PRINT           reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    LOOP            reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    FUNCTION        reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    LIST            reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    ELSE            reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+    RETURN          reduce using rule 21 (var_decl -> STRING ID ASSIGN STRING_EXPR ENDLINE .)
+
+
+state 94
+
+    (30) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN . lines end_if
     (4) lines -> . lines line
     (5) lines -> . line
     (6) line -> . var_decl
@@ -1696,28 +1642,30 @@ state 93
     (11) line -> . loop
     (12) line -> . func_decl
     (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
     (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
-    lines                          shift and go to state 100
+    lines                          shift and go to state 106
     line                           shift and go to state 6
     var_decl                       shift and go to state 7
     var_assign                     shift and go to state 8
@@ -1727,177 +1675,85 @@ state 93
     loop                           shift and go to state 12
     func_decl                      shift and go to state 13
     table_decl                     shift and go to state 14
-
-state 94
-
-    (17) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET . BEGIN lines RETURN factor_n
-
-    BEGIN           shift and go to state 101
-
+    table_assign                   shift and go to state 15
 
 state 95
 
-    (26) args -> args arg .
+    (34) expr -> expr oper_add comp .
+    (59) comp -> comp . oper_mult factor_n
+    (39) oper_mult -> . MULT
+    (40) oper_mult -> . DIV
+    (41) oper_mult -> . MOD
+    (42) oper_mult -> . AND
+    (43) oper_mult -> . OR
+    (44) oper_mult -> . XOR
+    (45) oper_mult -> . LESSER
+    (46) oper_mult -> . GREATER
+    (47) oper_mult -> . EQUAL
+    (48) oper_mult -> . LESSER_EQ
+    (49) oper_mult -> . GREATER_EQ
+    (50) oper_mult -> . N_EQUAL
 
-    CLOSE_BRACKET   reduce using rule 26 (args -> args arg .)
-    INT             reduce using rule 26 (args -> args arg .)
-    STRING          reduce using rule 26 (args -> args arg .)
+    CLOSE_BRACKET   reduce using rule 34 (expr -> expr oper_add comp .)
+    PLUS            reduce using rule 34 (expr -> expr oper_add comp .)
+    MINUS           reduce using rule 34 (expr -> expr oper_add comp .)
+    MULT            shift and go to state 70
+    DIV             shift and go to state 71
+    MOD             shift and go to state 72
+    AND             shift and go to state 73
+    OR              shift and go to state 74
+    XOR             shift and go to state 75
+    LESSER          shift and go to state 76
+    GREATER         shift and go to state 77
+    EQUAL           shift and go to state 78
+    LESSER_EQ       shift and go to state 79
+    GREATER_EQ      shift and go to state 80
+    N_EQUAL         shift and go to state 81
 
+    oper_mult                      shift and go to state 69
 
 state 96
 
-    (25) arg -> type ID .
+    (59) comp -> comp oper_mult factor_n .
 
-    CLOSE_BRACKET   reduce using rule 25 (arg -> type ID .)
-    INT             reduce using rule 25 (arg -> type ID .)
-    STRING          reduce using rule 25 (arg -> type ID .)
+    MULT            reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    DIV             reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    MOD             reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    AND             reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    OR              reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    XOR             reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    LESSER          reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    GREATER         reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    EQUAL           reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    LESSER_EQ       reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    GREATER_EQ      reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    N_EQUAL         reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    CLOSE_BRACKET   reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    PLUS            reduce using rule 59 (comp -> comp oper_mult factor_n .)
+    MINUS           reduce using rule 59 (comp -> comp oper_mult factor_n .)
 
 
 state 97
 
-    (24) func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .
+    (16) print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .
 
-    ENDLINE         reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    MULT            reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    DIV             reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    MOD             reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    AND             reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    OR              reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    XOR             reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    LESSER          reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    GREATER         reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    EQUAL           reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    LESSER_EQ       reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    GREATER_EQ      reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    N_EQUAL         reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    CLOSE_BRACKET   reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    PLUS            reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    MINUS           reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    NOT             reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    ID              reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    NUMBER          reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    OPEN_BRACKET    reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    END             reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    INT             reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    STRING          reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    IF              reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    COMMENT         reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    PRINT           reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    LOOP            reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    FUNCTION        reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    LIST            reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    ELSE            reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
-    RETURN          reduce using rule 24 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    END             reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    INT             reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    STRING          reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    ID              reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    IF              reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    COMMENT         reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    PRINT           reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    LOOP            reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    FUNCTION        reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    LIST            reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    ELSE            reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
+    RETURN          reduce using rule 16 (print -> PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE .)
 
 
 state 98
 
-    (56) factors_n -> factors_n factor_n .
-
-    CLOSE_BRACKET   reduce using rule 56 (factors_n -> factors_n factor_n .)
-    NOT             reduce using rule 56 (factors_n -> factors_n factor_n .)
-    ID              reduce using rule 56 (factors_n -> factors_n factor_n .)
-    NUMBER          reduce using rule 56 (factors_n -> factors_n factor_n .)
-    OPEN_BRACKET    reduce using rule 56 (factors_n -> factors_n factor_n .)
-
-
-state 99
-
-    (28) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines . end_if
-    (4) lines -> lines . line
-    (29) end_if -> . END
-    (30) end_if -> . else_stat
-    (6) line -> . var_decl
-    (7) line -> . var_assign
-    (8) line -> . if_stat
-    (9) line -> . comment
-    (10) line -> . print
-    (11) line -> . loop
-    (12) line -> . func_decl
-    (13) line -> . table_decl
-    (31) else_stat -> . ELSE THEN lines END
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
-    (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
-
-    END             shift and go to state 103
-    ELSE            shift and go to state 105
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
-
-    end_if                         shift and go to state 102
-    line                           shift and go to state 25
-    else_stat                      shift and go to state 104
-    var_decl                       shift and go to state 7
-    var_assign                     shift and go to state 8
-    if_stat                        shift and go to state 9
-    comment                        shift and go to state 10
-    print                          shift and go to state 11
-    loop                           shift and go to state 12
-    func_decl                      shift and go to state 13
-    table_decl                     shift and go to state 14
-
-state 100
-
-    (14) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines . END
-    (4) lines -> lines . line
-    (6) line -> . var_decl
-    (7) line -> . var_assign
-    (8) line -> . if_stat
-    (9) line -> . comment
-    (10) line -> . print
-    (11) line -> . loop
-    (12) line -> . func_decl
-    (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
-    (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
-
-    END             shift and go to state 106
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
-
-    line                           shift and go to state 25
-    var_decl                       shift and go to state 7
-    var_assign                     shift and go to state 8
-    if_stat                        shift and go to state 9
-    comment                        shift and go to state 10
-    print                          shift and go to state 11
-    loop                           shift and go to state 12
-    func_decl                      shift and go to state 13
-    table_decl                     shift and go to state 14
-
-state 101
-
-    (17) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN . lines RETURN factor_n
+    (15) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN . lines END
     (4) lines -> . lines line
     (5) lines -> . line
     (6) line -> . var_decl
@@ -1908,26 +1764,28 @@ state 101
     (11) line -> . loop
     (12) line -> . func_decl
     (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
     (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
     lines                          shift and go to state 107
     line                           shift and go to state 6
@@ -1939,89 +1797,162 @@ state 101
     loop                           shift and go to state 12
     func_decl                      shift and go to state 13
     table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
+
+state 99
+
+    (19) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET . BEGIN lines RETURN factor_n
+
+    BEGIN           shift and go to state 108
+
+
+state 100
+
+    (28) args -> args arg .
+
+    CLOSE_BRACKET   reduce using rule 28 (args -> args arg .)
+    INT             reduce using rule 28 (args -> args arg .)
+    STRING          reduce using rule 28 (args -> args arg .)
+
+
+state 101
+
+    (27) arg -> type ID .
+
+    CLOSE_BRACKET   reduce using rule 27 (arg -> type ID .)
+    INT             reduce using rule 27 (arg -> type ID .)
+    STRING          reduce using rule 27 (arg -> type ID .)
+
 
 state 102
 
-    (28) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .
+    (17) table_decl -> LIST type NUMBER ID ENDLINE .
 
-    END             reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    INT             reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    STRING          reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    ID              reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    IF              reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    COMMENT         reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    PRINT           reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    LOOP            reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    FUNCTION        reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    LIST            reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    ELSE            reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
-    RETURN          reduce using rule 28 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    END             reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    INT             reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    STRING          reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    ID              reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    IF              reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    COMMENT         reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    PRINT           reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    LOOP            reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    FUNCTION        reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    LIST            reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    ELSE            reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
+    RETURN          reduce using rule 17 (table_decl -> LIST type NUMBER ID ENDLINE .)
 
 
 state 103
 
-    (29) end_if -> END .
+    (26) func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .
 
-    END             reduce using rule 29 (end_if -> END .)
-    INT             reduce using rule 29 (end_if -> END .)
-    STRING          reduce using rule 29 (end_if -> END .)
-    ID              reduce using rule 29 (end_if -> END .)
-    IF              reduce using rule 29 (end_if -> END .)
-    COMMENT         reduce using rule 29 (end_if -> END .)
-    PRINT           reduce using rule 29 (end_if -> END .)
-    LOOP            reduce using rule 29 (end_if -> END .)
-    FUNCTION        reduce using rule 29 (end_if -> END .)
-    LIST            reduce using rule 29 (end_if -> END .)
-    ELSE            reduce using rule 29 (end_if -> END .)
-    RETURN          reduce using rule 29 (end_if -> END .)
+    ENDLINE         reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    MULT            reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    DIV             reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    MOD             reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    AND             reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    OR              reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    XOR             reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    LESSER          reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    GREATER         reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    EQUAL           reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    LESSER_EQ       reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    GREATER_EQ      reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    N_EQUAL         reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    CLOSE_BRACKET   reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    PLUS            reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    MINUS           reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    NOT             reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    ID              reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    NUMBER          reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    OPEN_BRACKET    reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    END             reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    INT             reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    STRING          reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    IF              reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    COMMENT         reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    PRINT           reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    LOOP            reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    FUNCTION        reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    LIST            reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    ELSE            reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
+    RETURN          reduce using rule 26 (func_call -> ID OPEN_BRACKET factors_n CLOSE_BRACKET .)
 
 
 state 104
 
-    (30) end_if -> else_stat .
+    (58) factors_n -> factors_n factor_n .
 
-    END             reduce using rule 30 (end_if -> else_stat .)
-    INT             reduce using rule 30 (end_if -> else_stat .)
-    STRING          reduce using rule 30 (end_if -> else_stat .)
-    ID              reduce using rule 30 (end_if -> else_stat .)
-    IF              reduce using rule 30 (end_if -> else_stat .)
-    COMMENT         reduce using rule 30 (end_if -> else_stat .)
-    PRINT           reduce using rule 30 (end_if -> else_stat .)
-    LOOP            reduce using rule 30 (end_if -> else_stat .)
-    FUNCTION        reduce using rule 30 (end_if -> else_stat .)
-    LIST            reduce using rule 30 (end_if -> else_stat .)
-    ELSE            reduce using rule 30 (end_if -> else_stat .)
-    RETURN          reduce using rule 30 (end_if -> else_stat .)
+    CLOSE_BRACKET   reduce using rule 58 (factors_n -> factors_n factor_n .)
+    NOT             reduce using rule 58 (factors_n -> factors_n factor_n .)
+    ID              reduce using rule 58 (factors_n -> factors_n factor_n .)
+    NUMBER          reduce using rule 58 (factors_n -> factors_n factor_n .)
+    OPEN_BRACKET    reduce using rule 58 (factors_n -> factors_n factor_n .)
 
 
 state 105
 
-    (31) else_stat -> ELSE . THEN lines END
+    (18) table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n . ENDLINE
 
-    THEN            shift and go to state 108
+    ENDLINE         shift and go to state 109
 
 
 state 106
 
-    (14) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .
+    (30) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines . end_if
+    (4) lines -> lines . line
+    (31) end_if -> . END
+    (32) end_if -> . else_stat
+    (6) line -> . var_decl
+    (7) line -> . var_assign
+    (8) line -> . if_stat
+    (9) line -> . comment
+    (10) line -> . print
+    (11) line -> . loop
+    (12) line -> . func_decl
+    (13) line -> . table_decl
+    (14) line -> . table_assign
+    (33) else_stat -> . ELSE THEN lines END
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (2) comment -> . COMMENT
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    END             reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    INT             reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    STRING          reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    ID              reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    IF              reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    COMMENT         reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    PRINT           reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    LOOP            reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    FUNCTION        reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    LIST            reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    ELSE            reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
-    RETURN          reduce using rule 14 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    END             shift and go to state 111
+    ELSE            shift and go to state 113
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
+    end_if                         shift and go to state 110
+    line                           shift and go to state 26
+    else_stat                      shift and go to state 112
+    var_decl                       shift and go to state 7
+    var_assign                     shift and go to state 8
+    if_stat                        shift and go to state 9
+    comment                        shift and go to state 10
+    print                          shift and go to state 11
+    loop                           shift and go to state 12
+    func_decl                      shift and go to state 13
+    table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
 
 state 107
 
-    (17) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines . RETURN factor_n
+    (15) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines . END
     (4) lines -> lines . line
     (6) line -> . var_decl
     (7) line -> . var_assign
@@ -2031,29 +1962,31 @@ state 107
     (11) line -> . loop
     (12) line -> . func_decl
     (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
     (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    RETURN          shift and go to state 109
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    END             shift and go to state 114
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
-    line                           shift and go to state 25
+    line                           shift and go to state 26
     var_decl                       shift and go to state 7
     var_assign                     shift and go to state 8
     if_stat                        shift and go to state 9
@@ -2062,10 +1995,11 @@ state 107
     loop                           shift and go to state 12
     func_decl                      shift and go to state 13
     table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
 
 state 108
 
-    (31) else_stat -> ELSE THEN . lines END
+    (19) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN . lines RETURN factor_n
     (4) lines -> . lines line
     (5) lines -> . line
     (6) line -> . var_decl
@@ -2076,28 +2010,30 @@ state 108
     (11) line -> . loop
     (12) line -> . func_decl
     (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
     (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
-    lines                          shift and go to state 110
+    lines                          shift and go to state 115
     line                           shift and go to state 6
     var_decl                       shift and go to state 7
     var_assign                     shift and go to state 8
@@ -2107,32 +2043,108 @@ state 108
     loop                           shift and go to state 12
     func_decl                      shift and go to state 13
     table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
 
 state 109
 
-    (17) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN . factor_n
-    (53) factor_n -> . NOT factor
-    (54) factor_n -> . factor
-    (49) factor -> . ID
-    (50) factor -> . NUMBER
-    (51) factor -> . brac_expr
-    (52) factor -> . func_call
-    (34) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
-    (24) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+    (18) table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .
 
-    NOT             shift and go to state 38
-    ID              shift and go to state 35
-    NUMBER          shift and go to state 40
-    OPEN_BRACKET    shift and go to state 43
+    END             reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    INT             reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    STRING          reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    ID              reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    IF              reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    COMMENT         reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    PRINT           reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    LOOP            reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    FUNCTION        reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    LIST            reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    ELSE            reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
+    RETURN          reduce using rule 18 (table_assign -> ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE .)
 
-    factor_n                       shift and go to state 111
-    factor                         shift and go to state 39
-    brac_expr                      shift and go to state 41
-    func_call                      shift and go to state 42
 
 state 110
 
-    (31) else_stat -> ELSE THEN lines . END
+    (30) if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .
+
+    END             reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    INT             reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    STRING          reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    ID              reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    IF              reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    COMMENT         reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    PRINT           reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    LOOP            reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    FUNCTION        reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    LIST            reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    ELSE            reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+    RETURN          reduce using rule 30 (if_stat -> IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if .)
+
+
+state 111
+
+    (31) end_if -> END .
+
+    END             reduce using rule 31 (end_if -> END .)
+    INT             reduce using rule 31 (end_if -> END .)
+    STRING          reduce using rule 31 (end_if -> END .)
+    ID              reduce using rule 31 (end_if -> END .)
+    IF              reduce using rule 31 (end_if -> END .)
+    COMMENT         reduce using rule 31 (end_if -> END .)
+    PRINT           reduce using rule 31 (end_if -> END .)
+    LOOP            reduce using rule 31 (end_if -> END .)
+    FUNCTION        reduce using rule 31 (end_if -> END .)
+    LIST            reduce using rule 31 (end_if -> END .)
+    ELSE            reduce using rule 31 (end_if -> END .)
+    RETURN          reduce using rule 31 (end_if -> END .)
+
+
+state 112
+
+    (32) end_if -> else_stat .
+
+    END             reduce using rule 32 (end_if -> else_stat .)
+    INT             reduce using rule 32 (end_if -> else_stat .)
+    STRING          reduce using rule 32 (end_if -> else_stat .)
+    ID              reduce using rule 32 (end_if -> else_stat .)
+    IF              reduce using rule 32 (end_if -> else_stat .)
+    COMMENT         reduce using rule 32 (end_if -> else_stat .)
+    PRINT           reduce using rule 32 (end_if -> else_stat .)
+    LOOP            reduce using rule 32 (end_if -> else_stat .)
+    FUNCTION        reduce using rule 32 (end_if -> else_stat .)
+    LIST            reduce using rule 32 (end_if -> else_stat .)
+    ELSE            reduce using rule 32 (end_if -> else_stat .)
+    RETURN          reduce using rule 32 (end_if -> else_stat .)
+
+
+state 113
+
+    (33) else_stat -> ELSE . THEN lines END
+
+    THEN            shift and go to state 116
+
+
+state 114
+
+    (15) loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .
+
+    END             reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    INT             reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    STRING          reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    ID              reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    IF              reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    COMMENT         reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    PRINT           reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    LOOP            reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    FUNCTION        reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    LIST            reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    ELSE            reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+    RETURN          reduce using rule 15 (loop -> LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END .)
+
+
+state 115
+
+    (19) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines . RETURN factor_n
     (4) lines -> lines . line
     (6) line -> . var_decl
     (7) line -> . var_assign
@@ -2142,29 +2154,31 @@ state 110
     (11) line -> . loop
     (12) line -> . func_decl
     (13) line -> . table_decl
-    (18) var_decl -> . INT ID ASSIGN factor_n ENDLINE
-    (19) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
-    (20) var_assign -> . ID ASSIGN factor_n ENDLINE
-    (21) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
-    (28) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
     (2) comment -> . COMMENT
-    (15) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
-    (14) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
-    (17) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
-    (16) table_decl -> . LIST ID NUMBER ENDLINE
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    END             shift and go to state 112
-    INT             shift and go to state 15
-    STRING          shift and go to state 17
-    ID              shift and go to state 16
-    IF              shift and go to state 18
-    COMMENT         shift and go to state 19
-    PRINT           shift and go to state 20
-    LOOP            shift and go to state 21
-    FUNCTION        shift and go to state 22
-    LIST            shift and go to state 23
+    RETURN          shift and go to state 117
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
 
-    line                           shift and go to state 25
+    line                           shift and go to state 26
     var_decl                       shift and go to state 7
     var_assign                     shift and go to state 8
     if_stat                        shift and go to state 9
@@ -2173,43 +2187,161 @@ state 110
     loop                           shift and go to state 12
     func_decl                      shift and go to state 13
     table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
 
-state 111
+state 116
 
-    (17) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .
+    (33) else_stat -> ELSE THEN . lines END
+    (4) lines -> . lines line
+    (5) lines -> . line
+    (6) line -> . var_decl
+    (7) line -> . var_assign
+    (8) line -> . if_stat
+    (9) line -> . comment
+    (10) line -> . print
+    (11) line -> . loop
+    (12) line -> . func_decl
+    (13) line -> . table_decl
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (2) comment -> . COMMENT
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
 
-    END             reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    INT             reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    STRING          reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    ID              reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    IF              reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    COMMENT         reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    PRINT           reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    LOOP            reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    FUNCTION        reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    LIST            reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    ELSE            reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
-    RETURN          reduce using rule 17 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
+
+    lines                          shift and go to state 118
+    line                           shift and go to state 6
+    var_decl                       shift and go to state 7
+    var_assign                     shift and go to state 8
+    if_stat                        shift and go to state 9
+    comment                        shift and go to state 10
+    print                          shift and go to state 11
+    loop                           shift and go to state 12
+    func_decl                      shift and go to state 13
+    table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
+
+state 117
+
+    (19) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN . factor_n
+    (55) factor_n -> . NOT factor
+    (56) factor_n -> . factor
+    (51) factor -> . ID
+    (52) factor -> . NUMBER
+    (53) factor -> . brac_expr
+    (54) factor -> . func_call
+    (36) brac_expr -> . OPEN_BRACKET expr CLOSE_BRACKET
+    (26) func_call -> . ID OPEN_BRACKET factors_n CLOSE_BRACKET
+
+    NOT             shift and go to state 42
+    ID              shift and go to state 39
+    NUMBER          shift and go to state 44
+    OPEN_BRACKET    shift and go to state 47
+
+    factor_n                       shift and go to state 119
+    factor                         shift and go to state 43
+    brac_expr                      shift and go to state 45
+    func_call                      shift and go to state 46
+
+state 118
+
+    (33) else_stat -> ELSE THEN lines . END
+    (4) lines -> lines . line
+    (6) line -> . var_decl
+    (7) line -> . var_assign
+    (8) line -> . if_stat
+    (9) line -> . comment
+    (10) line -> . print
+    (11) line -> . loop
+    (12) line -> . func_decl
+    (13) line -> . table_decl
+    (14) line -> . table_assign
+    (20) var_decl -> . INT ID ASSIGN factor_n ENDLINE
+    (21) var_decl -> . STRING ID ASSIGN STRING_EXPR ENDLINE
+    (22) var_assign -> . ID ASSIGN factor_n ENDLINE
+    (23) var_assign -> . ID ASSIGN STRING_EXPR ENDLINE
+    (30) if_stat -> . IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
+    (2) comment -> . COMMENT
+    (16) print -> . PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
+    (15) loop -> . LOOP OPEN_BRACKET expr CLOSE_BRACKET BEGIN lines END
+    (19) func_decl -> . FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n
+    (17) table_decl -> . LIST type NUMBER ID ENDLINE
+    (18) table_assign -> . ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
+
+    END             shift and go to state 120
+    INT             shift and go to state 16
+    STRING          shift and go to state 18
+    ID              shift and go to state 17
+    IF              shift and go to state 19
+    COMMENT         shift and go to state 20
+    PRINT           shift and go to state 21
+    LOOP            shift and go to state 22
+    FUNCTION        shift and go to state 23
+    LIST            shift and go to state 24
+
+    line                           shift and go to state 26
+    var_decl                       shift and go to state 7
+    var_assign                     shift and go to state 8
+    if_stat                        shift and go to state 9
+    comment                        shift and go to state 10
+    print                          shift and go to state 11
+    loop                           shift and go to state 12
+    func_decl                      shift and go to state 13
+    table_decl                     shift and go to state 14
+    table_assign                   shift and go to state 15
+
+state 119
+
+    (19) func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .
+
+    END             reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    INT             reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    STRING          reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    ID              reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    IF              reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    COMMENT         reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    PRINT           reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    LOOP            reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    FUNCTION        reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    LIST            reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    ELSE            reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
+    RETURN          reduce using rule 19 (func_decl -> FUNCTION ID OPEN_BRACKET args CLOSE_BRACKET BEGIN lines RETURN factor_n .)
 
 
-state 112
+state 120
 
-    (31) else_stat -> ELSE THEN lines END .
+    (33) else_stat -> ELSE THEN lines END .
 
-    END             reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    INT             reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    STRING          reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    ID              reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    IF              reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    COMMENT         reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    PRINT           reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    LOOP            reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    FUNCTION        reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    LIST            reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    ELSE            reduce using rule 31 (else_stat -> ELSE THEN lines END .)
-    RETURN          reduce using rule 31 (else_stat -> ELSE THEN lines END .)
+    END             reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    INT             reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    STRING          reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    ID              reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    IF              reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    COMMENT         reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    PRINT           reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    LOOP            reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    FUNCTION        reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    LIST            reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    ELSE            reduce using rule 33 (else_stat -> ELSE THEN lines END .)
+    RETURN          reduce using rule 33 (else_stat -> ELSE THEN lines END .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for OPEN_BRACKET in state 35 resolved as shift
+WARNING: shift/reduce conflict for OPEN_BRACKET in state 39 resolved as shift

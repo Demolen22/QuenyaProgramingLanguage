@@ -1,9 +1,11 @@
 talma esse
 tulca sum (iluve x iluve y) esse
+hyalin iluve 5 l;
+l [1] : 5;
 iluve u : (x+y);
 iluve z : (u+2);
 yare (u < 10) esse
-u : (u*3);
+u : (u+1);
 lanca
 entulesse u
 iluve result : sum(3 2);

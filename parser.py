@@ -24,7 +24,9 @@ PRINT = "print"
 FUNC_CALL = "func_call"
 FUNC_DECL = "func_decl"
 TABLE_DECL = "table_decl"
+TABLE_ASSIGN = "table_assign"
 SIZE = "size"
+INDEX = "index"
 
 
 class Parser:
@@ -127,7 +129,8 @@ class Parser:
                     scope_dict[event[ID]] = {TYPE: event[TYPE],
                                              VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
                     if event[TYPE] == "INT":
-                        scope_dict[event[ID]] = {TYPE:event[TYPE], VALUE:self._arithmetic_interpreter(event[VALUE], scope_dict)}
+                        scope_dict[event[ID]] = {TYPE: event[TYPE],
+                                                 VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
                     elif event[TYPE] == "STRING":
                         scope_dict[event[ID]] = {TYPE: event[TYPE], VALUE: event[VALUE]}
                 elif event[OPERATION] == UPDATE:
@@ -154,7 +157,9 @@ class Parser:
                 elif event[OPERATION] == PRINT:
                     print(f"OUTPUT: {self._arithmetic_interpreter(event[VALUE], scope_dict)}")
                 elif event[OPERATION] == TABLE_DECL:
-                    scope_dict[event[ID]] = {TYPE: event[TYPE], SIZE: event[SIZE], VALUE: [None]*event[SIZE]}
+                    scope_dict[event[ID]] = {TYPE: event[TYPE], SIZE: event[SIZE], VALUE: [None] * event[SIZE]}
+                elif event[OPERATION] == TABLE_ASSIGN:
+                    self._arithmetic_interpreter(event, scope_dict)
         print("scope dict ", scope_dict)
 
     def _arithmetic_interpreter(self, value, scope_dict):
@@ -179,8 +184,11 @@ class Parser:
             elif value[OPERATION] == FUNC_CALL:
                 print(self._call_function(value[ID], value[ARGS], scope_dict))
                 return self._call_function(value[ID], value[ARGS], scope_dict)
-            elif value[OPERATION] == LOOP:
-                pass
+            elif value[OPERATION] == TABLE_ASSIGN:
+                if scope_dict[value[ID]][SIZE] > value[INDEX]:
+                    print("assinging value to tab", scope_dict[value[ID]][VALUE])
+                    scope_dict[value[ID]][VALUE][value[INDEX]] = value[VALUE]
+                    print(scope_dict[value[ID]][VALUE])
             else:
                 return self._arithmetic_interpreter(value[VALUE], scope_dict)
         elif type(value) == str:
@@ -215,6 +223,7 @@ class Parser:
                 | loop
                 | func_decl
                 | table_decl
+                | table_assign
         '''
         p[0] = p[1]
         print(f'line {p[0]}', end="\n\n")
@@ -233,19 +242,21 @@ class Parser:
         '''
         print : PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
         '''
-        p[0] = {OPERATION:"print", VALUE:p[3]}
+        p[0] = {OPERATION: "print", VALUE: p[3]}
 
     def p_table_decl(self, p):
         '''
         table_decl : LIST type NUMBER ID ENDLINE
         '''
-        p[0] = {OPERATION:TABLE_DECL, TYPE:p[1], ID:p[4], SIZE:p[3]}
+        p[0] = {OPERATION: TABLE_DECL, TYPE: self.reserved[p[2]], ID: p[4], SIZE: p[3]}
         print(f"table_decl {p[0]}")
 
-    def p_table_assign(self):
+    def p_table_assign(self, p):
         '''
-        table_assign ID
+        table_assign : ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
         '''
+        p[0] = {OPERATION: TABLE_ASSIGN, ID: p[1], VALUE: p[6], INDEX: p[3]}
+        print(f'table assign idx {p[1]} with value {p[5]}')
 
     def p_func_decl(self, p):
         '''
