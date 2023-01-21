@@ -124,8 +124,21 @@ class Parser:
                 elif event[OPERATION] == ADD_NEW_VAR:
                     scope_dict[event[ID]] = {TYPE: event[TYPE],
                                              VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
+                    if event[TYPE] == "INT":
+                        scope_dict[event[ID]] = {TYPE:event[TYPE], VALUE:self._arithmetic_interpreter(event[VALUE], scope_dict)}
+                    elif event[TYPE] == "STRING":
+                        scope_dict[event[ID]] = {TYPE: event[TYPE], VALUE: event[VALUE]}
                 elif event[OPERATION] == UPDATE:
-                    scope_dict[event[ID]][VALUE] = self._arithmetic_interpreter(event[VALUE], scope_dict)
+                    if scope_dict.get(event[ID]) is None:
+                        print(f"VARIABLE {event[ID]} UNDECLARED")
+                        raise Exception
+                    if scope_dict[event[ID]][TYPE] == "INT":
+                        if type(event[VALUE]) == str:
+                            print(f"CANNOT ASSIGN STRING '{event['value']}' TO INT {event[ID]}")
+                            raise Exception
+                        scope_dict[event[ID]][VALUE] = self._arithmetic_interpreter(event[VALUE], scope_dict)
+                    elif scope_dict[event[ID]][TYPE] == "STRING":
+                        scope_dict[event[ID]][VALUE] = str(event[VALUE])
                 elif event[OPERATION] == ADD_NEW_FUNC:
                     self._save_func_declaration(event, scope_dict)
                 elif event[OPERATION] == IF_STAT:
@@ -167,7 +180,12 @@ class Parser:
             else:
                 return self._arithmetic_interpreter(value[VALUE], scope_dict)
         elif type(value) == str:
-            # exception handling (var not in scope, types are correct)
+            if scope_dict.get(value) is None:
+                print(f"VARIABLE {value} UNDECLARED")
+                raise Exception
+            if scope_dict[value][TYPE] == "STRING":
+                print(f"ILLEGAL ARITHMETIC OPERATION ON STRING VARIABLE: {value} {scope_dict[value]['value']}")
+                raise Exception
             return scope_dict[value][VALUE]
         else:
             return value
@@ -192,6 +210,7 @@ class Parser:
                 | print
                 | loop
                 | func_decl
+                | table_decl
         '''
         p[0] = p[1]
         print(f'line {p[0]}', end="\n\n")
@@ -210,8 +229,12 @@ class Parser:
         '''
         print : PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
         '''
-        print("OUTPUT:", p[3])
-        p[0] = {OPERATION: None}
+        p[0] = {OPERATION:"print", VALUE:p[3]}
+
+    def p_table_decl(self, p):
+        '''
+        table_decl : LIST ID NUMBER ENDLINE
+        '''
 
     def p_func_decl(self, p):
         '''
@@ -228,7 +251,8 @@ class Parser:
 
     def p_var_decl(self, p):
         '''
-        var_decl : type ID ASSIGN factor_n ENDLINE
+        var_decl : INT ID ASSIGN factor_n ENDLINE
+                | STRING ID ASSIGN STRING_EXPR ENDLINE
         '''
         p[0] = {TYPE: self.reserved[p[1]], ID: p[2], VALUE: p[4], OPERATION: ADD_NEW_VAR}
         print(f'var_decl {p[0]}', end="\n\n")
@@ -236,6 +260,7 @@ class Parser:
     def p_var_assign(self, p):
         '''
         var_assign : ID ASSIGN factor_n ENDLINE
+                    | ID ASSIGN STRING_EXPR ENDLINE
         '''
         p[0] = {OPERATION: UPDATE, ID: p[1], VALUE: p[3]}
         print(f'var_assign {p[0]}', end="\n\n")

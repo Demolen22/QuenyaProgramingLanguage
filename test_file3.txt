@@ -1,3 +1,5 @@
 talma esse
-iluve idik1 : (10-2*(9+78));
+tema str1 : {ale ma kota!};
+iluve a : 0;
+@a : {ala nie ma kotu :((};
 lanca

@@ -14,7 +14,6 @@ class Lexer:
             r'san': 'THEN',
             r'eldarissa': 'ELSE',
             r'yare': 'LOOP',
-            r'an': 'ITERABLE_LOOP',
             r'iluve': 'INT',
             r'tema': 'STRING',
             r'tulca': 'FUNCTION',
@@ -35,7 +34,6 @@ class Lexer:
         'THEN',
         'ELSE',
         'LOOP',
-        'ITERABLE_LOOP',
         'INT',
         'STRING',
         'FUNCTION',
@@ -100,10 +98,6 @@ class Lexer:
 
     def t_LOOP(self, t):
         r'yare'
-        return t
-
-    def t_ITERABLE_LOOP(self, t):
-        r'an'
         return t
 
     def t_INT(self, t):
