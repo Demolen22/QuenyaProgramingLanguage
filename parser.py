@@ -77,6 +77,7 @@ class Parser:
             "return": function["return"]
         }
         print("scope dict", scope_dict)
+
     def _call_function(self, id, args, scope_dict):
         func_decl = scope_dict[id]
         if len(func_decl["args"]) != len(args):
@@ -114,7 +115,7 @@ class Parser:
                             raise Exception
                         scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
                     elif scope_dict[event["id"]]["type"] == "STRING":
-                        scope_dict[event["id"]]["value"] = event["value"]
+                        scope_dict[event["id"]]["value"] = str(event["value"])
                 elif event["operation"] == "add_new_func":
                     self._save_func_declaration(event, scope_dict)
                 elif event["operation"] == "if_stat":
@@ -125,7 +126,6 @@ class Parser:
                 elif event["operation"] == "print":
                     print(f"OUTPUT: {self._arithmetic_interpreter(event['value'], scope_dict)}")
         print("scope dict ", scope_dict)
-
 
     def _arithmetic_interpreter(self, value, scope_dict):
         if type(value) == list:
@@ -198,6 +198,11 @@ class Parser:
         print : PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
         '''
         p[0] = {"operation":"print", "value":p[3]}
+
+    def p_table_decl(self, p):
+        '''
+        table : TABLE ID
+        '''
 
     def p_func_decl(self, p):
         '''
