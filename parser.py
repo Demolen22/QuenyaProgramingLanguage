@@ -120,31 +120,31 @@ class Parser:
             if event is not None:
                 if type(event) == list:
                     self._fill_event_list(event, scope_dict)
-                elif event["operation"] == "add_new_var":
-                    if event["type"] == "INT":
-                        scope_dict[event["id"]] = {"type":event["type"], "value":self._arithmetic_interpreter(event["value"], scope_dict)}
-                    elif event["type"] == "STRING":
-                        scope_dict[event["id"]] = {"type": event["type"], "value": event["value"]}
-                elif event["operation"] == "update":
-                    if scope_dict.get(event["id"]) is None:
-                        print(f"VARIABLE {event['id']} UNDECLARED")
+                elif event[OPERATION] == ADD_NEW_VAR:
+                    if event[TYPE] == "INT":
+                        scope_dict[event[ID]] = {TYPE:event[TYPE], VALUE:self._arithmetic_interpreter(event[VALUE], scope_dict)}
+                    elif event[TYPE] == "STRING":
+                        scope_dict[event[ID]] = {TYPE: event[TYPE], VALUE: event[VALUE]}
+                elif event[OPERATION] == UPDATE:
+                    if scope_dict.get(event[ID]) is None:
+                        print(f"VARIABLE {event[ID]} UNDECLARED")
                         raise Exception
-                    if scope_dict[event["id"]]["type"] == "INT":
-                        if type(event["value"]) == str:
-                            print(f"CANNOT ASSIGN STRING '{event['value']}' TO INT {event['id']}")
+                    if scope_dict[event[ID]][TYPE] == "INT":
+                        if type(event[VALUE]) == str:
+                            print(f"CANNOT ASSIGN STRING '{event['value']}' TO INT {event[ID]}")
                             raise Exception
-                        scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
-                    elif scope_dict[event["id"]]["type"] == "STRING":
-                        scope_dict[event["id"]]["value"] = str(event["value"])
-                elif event["operation"] == "add_new_func":
+                        scope_dict[event[ID]][VALUE] = self._arithmetic_interpreter(event[VALUE], scope_dict)
+                    elif scope_dict[event[ID]][TYPE] == "STRING":
+                        scope_dict[event[ID]][VALUE] = str(event[VALUE])
+                elif event[OPERATION] == ADD_NEW_FUNC:
                     self._save_func_declaration(event, scope_dict)
-                elif event["operation"] == "if_stat":
-                    if self._arithmetic_interpreter(event["cond"], scope_dict) != 0:
-                        self._fill_event_list(event["if_lines"], scope_dict)
-                    elif event["else_lines"] is not None:
-                        self._fill_event_list(event["else_lines"], scope_dict)
-                elif event["operation"] == "print":
-                    print(f"OUTPUT: {self._arithmetic_interpreter(event['value'], scope_dict)}")
+                elif event[OPERATION] == IF_STAT:
+                    if self._arithmetic_interpreter(event[COND], scope_dict) != 0:
+                        self._fill_event_list(event[IF_LINES], scope_dict)
+                    elif event[ELSE_LINES] is not None:
+                        self._fill_event_list(event[ELSE_LINES], scope_dict)
+                elif event[OPERATION] == PRINT:
+                    print(f"OUTPUT: {self._arithmetic_interpreter(event[VALUE], scope_dict)}")
         print("scope dict ", scope_dict)
 
     def _arithmetic_interpreter(self, value, scope_dict):
@@ -177,10 +177,10 @@ class Parser:
             if scope_dict.get(value) is None:
                 print(f"VARIABLE {value} UNDECLARED")
                 raise Exception
-            if scope_dict[value]["type"] == "STRING":
+            if scope_dict[value][TYPE] == "STRING":
                 print(f"ILLEGAL ARITHMETIC OPERATION ON STRING VARIABLE: {value} {scope_dict[value]['value']}")
                 raise Exception
-            return scope_dict[value]["value"]
+            return scope_dict[value][VALUE]
         else:
             return value
 
@@ -204,6 +204,7 @@ class Parser:
                 | print
                 | loop
                 | func_decl
+                | table_decl
         '''
         p[0] = p[1]
         print(f'line {p[0]}', end="\n\n")
@@ -222,11 +223,11 @@ class Parser:
         '''
         print : PRINT OPEN_BRACKET expr CLOSE_BRACKET ENDLINE
         '''
-        p[0] = {"operation":"print", "value":p[3]}
+        p[0] = {OPERATION:"print", VALUE:p[3]}
 
     def p_table_decl(self, p):
         '''
-        table : TABLE ID
+        table_decl : LIST ID NUMBER ENDLINE
         '''
 
     def p_func_decl(self, p):
