@@ -1,5 +1,6 @@
 from lexer import Lexer
 import ply.yacc as yacc
+from copy import deepcopy
 import sys
 
 
@@ -66,18 +67,33 @@ class Parser:
         p[0] = dict()
         if type(p[2]) == list:
             self._fill_event_list(p[2], p[0])
-        if type(p[2]) == dict:
-            self._save_func_declaration(p[2], p[0])
         print(f"block {p[0]}", end="\n\n")
 
     def _save_func_declaration(self, function, scope_dict):
         scope_dict[function["id"]] = {
             "type": "function",
             "args": function["args"],
-            "value": function["body"],
+            "body": function["value"],
             "return": function["return"]
         }
         print("scope dict", scope_dict)
+    def _call_function(self, id, args, scope_dict):
+        func_decl = scope_dict[id]
+        if len(func_decl["args"]) != len(args):
+            raise Exception(f'numer of arguments is {len(args)} and should be {len(func_decl["args"])}')
+        for idx, arg in enumerate(args):
+            func_decl["args"][idx]["value"] = arg
+        local_scope_dict = deepcopy(scope_dict)
+        for variable in scope_dict.values():
+            if variable["type"] == "function":
+                for func_var in variable["args"]:
+                    local_scope_dict[func_var["id"]] = func_var
+        print(f'local scope dict {local_scope_dict}')
+        print(f'func {id} called with args {func_decl["args"]} scope dict is {local_scope_dict}')
+        self._fill_event_list(func_decl["body"], local_scope_dict)
+        print(f'And got {local_scope_dict[func_decl["return"]]["value"]}')
+        return local_scope_dict[func_decl["return"]]["value"]
+
     def _fill_event_list(self, event_list, scope_dict):
         for event in event_list:
             if event is not None:
@@ -88,6 +104,8 @@ class Parser:
                                                "value": self._arithmetic_interpreter(event["value"], scope_dict)}
                 elif event["operation"] == "update":
                     scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
+                elif event["operation"] == "add_new_func":
+                    self._save_func_declaration(event, scope_dict)
         print("scope dict ", scope_dict)
 
     def _arithmetic_interpreter(self, value, scope_dict):
@@ -109,6 +127,9 @@ class Parser:
         elif type(value) == dict:
             if value["operation"] == "~":
                 return int(not self._arithmetic_interpreter(value["value"], scope_dict))
+            elif value["operation"] == "func_call":
+                print(self._call_function(value["id"], value["args"], scope_dict))
+                return self._call_function(value["id"], value["args"], scope_dict)
             else:
                 return self._arithmetic_interpreter(value["value"], scope_dict)
         elif type(value) == str:
@@ -122,7 +143,6 @@ class Parser:
         lines : lines line
                 | line
         '''
-        print(p[0])
         if len(p) == 2:
             p[0] = [p[1]]
         else:
@@ -163,15 +183,16 @@ class Parser:
         p[0] = dict()
         p[0]["id"] = p[2]
         p[0]["args"] = p[4]
-        p[0]["body"] = p[7]
+        p[0]["value"] = p[7]
         p[0]["return"] = p[9]
+        p[0]["operation"] = "add_new_func"
+        p[0]["type"] = "function"
         print('func_decl', end="\n\n")
 
     def p_var_decl(self, p):
         '''
         var_decl : type ID ASSIGN factor_n ENDLINE
         '''
-        # TODO if id in reserved throw error
         p[0] = {"type": self.reserved[p[1]], "id": p[2], "value": p[4], "operation": "add_new_var"}
         print(f'var_decl {p[0]}', end="\n\n")
 
@@ -195,15 +216,19 @@ class Parser:
         '''
         func_call : ID OPEN_BRACKET factors_n CLOSE_BRACKET
         '''
+        p[0] = dict()
+        p[0]["id"] = p[1]
+        p[0]["args"] = p[3]
+        p[0]["operation"] = "func_call"
         print('func_call', end="\n\n")
 
     def p_arg(self, p):
         '''
         arg : type ID
         '''
-        p[0] = {"type": self.reserved[p[1]], "id": p[2], "value": None, "operation": "add_new_var"}
+        p[0] = {"type": self.reserved[p[1]], "id": p[2], "value": None}
         print(p[0])
-        print('arg',end='\n\n')
+        print('arg', end='\n\n')
 
     def p_args(self, p):
         '''
@@ -319,6 +344,11 @@ class Parser:
         factors_n : factor_n
                 | factors_n factor_n
         '''
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1] + [p[2]]
+        print(p[0])
 
     def p_comp(self, p):
         '''
