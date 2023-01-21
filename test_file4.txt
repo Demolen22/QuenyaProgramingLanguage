@@ -1,6 +1,7 @@
 talma esse
 tulca sum (iluve x iluve y) esse
-iluve z : (x+y);
+iluve u : (x+y);
+iluve z : (u+2);
 entulesse z
 iluve result : sum(3 2);
 lanca
