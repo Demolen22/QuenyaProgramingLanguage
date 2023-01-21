@@ -104,9 +104,18 @@ class Parser:
                                                "value": self._arithmetic_interpreter(event["value"], scope_dict)}
                 elif event["operation"] == "update":
                     scope_dict[event["id"]]["value"] = self._arithmetic_interpreter(event["value"], scope_dict)
+
                 elif event["operation"] == "add_new_func":
                     self._save_func_declaration(event, scope_dict)
+                elif event["operation"] == "if_stat":
+                    if self._arithmetic_interpreter(event["cond"], scope_dict) != 0:
+                        self._fill_event_list(event["if_lines"], scope_dict)
+                    elif event["else_lines"] is not None:
+                        self._fill_event_list(event["else_lines"], scope_dict)
+                elif event["operation"] == "print":
+                    print(f"OUTPUT: {self._arithmetic_interpreter(event['value'], scope_dict)}")
         print("scope dict ", scope_dict)
+
 
     def _arithmetic_interpreter(self, value, scope_dict):
         if type(value) == list:
@@ -175,6 +184,7 @@ class Parser:
         '''
         print("OUTPUT:", p[3])
         p[0] = {"operation": None}
+
 
     def p_func_decl(self, p):
         '''
@@ -246,10 +256,7 @@ class Parser:
         '''
         if_stat : IF OPEN_BRACKET expr CLOSE_BRACKET THEN lines end_if
         '''
-        if p[3] > 0:
-            p[0] = p[6]
-        elif p[7] is not None:
-            p[0] = p[7]
+        p[0] = {"operation":"if_stat", "cond":p[3], "if_lines":p[6], "else_lines":p[7]}
         print(f'if_stat {p[0]}', end="\n\n")
 
     def p_end_if(self, p):
@@ -257,7 +264,8 @@ class Parser:
         end_if : END
                  | else_stat
         '''
-        p[0] = p[1]
+        if type(p[1]) != str:
+            p[0] = p[1]
         print('end_if', end="\n\n")
 
     def p_else_stat(self, p):
@@ -272,13 +280,6 @@ class Parser:
         expr : expr oper_add comp
                | comp
         '''
-        # if len(p) == 2:
-        #     p[0] = p[1]
-        # else:
-        #     if p[2] == '-':
-        #         p[0] = p[1] - p[3]
-        #     elif p[2] == '+':
-        #         p[0] = p[1] + p[3]
         if len(p) == 2:
             p[0] = [{"operation": "first", "value": p[1]}]
         else:
