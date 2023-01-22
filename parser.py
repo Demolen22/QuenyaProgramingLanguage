@@ -126,13 +126,11 @@ class Parser:
                 if type(event) == list:
                     self._fill_event_list(event, scope_dict)
                 elif event[OPERATION] == ADD_NEW_VAR:
-                    scope_dict[event[ID]] = {TYPE: event[TYPE],
-                                             VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
                     if event[TYPE] == "INT":
                         scope_dict[event[ID]] = {TYPE: event[TYPE],
                                                  VALUE: self._arithmetic_interpreter(event[VALUE], scope_dict)}
                     elif event[TYPE] == "STRING":
-                        scope_dict[event[ID]] = {TYPE: event[TYPE], VALUE: event[VALUE]}
+                        scope_dict[event[ID]] = {TYPE: event[TYPE], VALUE: self._str_interpreter(event[VALUE], scope_dict)}
                 elif event[OPERATION] == UPDATE:
                     if scope_dict.get(event[ID]) is None:
                         print(f"VARIABLE {event[ID]} UNDECLARED")
@@ -143,7 +141,7 @@ class Parser:
                             raise Exception
                         scope_dict[event[ID]][VALUE] = self._arithmetic_interpreter(event[VALUE], scope_dict)
                     elif scope_dict[event[ID]][TYPE] == "STRING":
-                        scope_dict[event[ID]][VALUE] = str(event[VALUE])
+                        scope_dict[event[ID]][VALUE] = self._str_interpreter(str(event[VALUE]), scope_dict)
                 elif event[OPERATION] == ADD_NEW_FUNC:
                     self._save_func_declaration(event, scope_dict)
                 elif event[OPERATION] == IF_STAT:
@@ -161,6 +159,33 @@ class Parser:
                 elif event[OPERATION] == TABLE_ASSIGN:
                     self._arithmetic_interpreter(event, scope_dict)
         print("scope dict ", scope_dict)
+
+    def _str_interpreter(self, value, scope_dict):
+        if type(value) == list:
+            result = ""
+            for val in value:
+                if val[OPERATION] == FIRST:
+                    result = self._str_interpreter(val[VALUE], scope_dict)
+                else:
+                    component = self._str_interpreter(val[VALUE], scope_dict)
+                    print(f"{result} {val[OPERATION]} {component} = ", end="")
+                    if component == "":
+                        component = "a"
+                    component = (component * len(result))[:len(result)]
+                    if val[OPERATION] == '+':
+                        result = "".join([chr(ord('a') + (ord(result[i]) + ord(component[i])) % (ord('z')-ord('a')+1)) for i in range(len(result))])
+                    elif val[OPERATION] == '-':
+                        result = "".join([chr(ord('a') + (ord(result[i]) - ord(component[i])) % (ord('z')-ord('a')+1)) for i in range(len(result))])
+                    print(result)
+            return result
+        if type(value) == str:
+            if scope_dict.get(value) is None:
+                return value
+            elif scope_dict[value][TYPE] == "STRING":
+                return scope_dict[value][VALUE]
+            else:
+                print(f"ILLEGAL STRING OPERATION ON INT VARIABLE: {value} {scope_dict[value]['value']}")
+                raise Exception
 
     def _arithmetic_interpreter(self, value, scope_dict):
         if type(value) == list:
@@ -185,9 +210,10 @@ class Parser:
                 print(self._call_function(value[ID], value[ARGS], scope_dict))
                 return self._call_function(value[ID], value[ARGS], scope_dict)
             elif value[OPERATION] == TABLE_ASSIGN:
-                if scope_dict[value[ID]][SIZE] > value[INDEX]:
+                value_index = self._arithmetic_interpreter(value[INDEX], scope_dict)
+                if scope_dict[value[ID]][SIZE] > value_index:
                     print("assinging value to tab", scope_dict[value[ID]][VALUE])
-                    scope_dict[value[ID]][VALUE][value[INDEX]] = value[VALUE]
+                    scope_dict[value[ID]][VALUE][value_index] = value[VALUE]
                     print(scope_dict[value[ID]][VALUE])
             else:
                 return self._arithmetic_interpreter(value[VALUE], scope_dict)
@@ -253,7 +279,7 @@ class Parser:
 
     def p_table_assign(self, p):
         '''
-        table_assign : ID OPEN_SQ_BRACKET NUMBER CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
+        table_assign : ID OPEN_SQ_BRACKET factor_n CLOSE_SQ_BRACKET ASSIGN factor_n ENDLINE
         '''
         p[0] = {OPERATION: TABLE_ASSIGN, ID: p[1], VALUE: p[6], INDEX: p[3]}
         print(f'table assign idx {p[1]} with value {p[5]}')
@@ -274,7 +300,7 @@ class Parser:
     def p_var_decl(self, p):
         '''
         var_decl : INT ID ASSIGN factor_n ENDLINE
-                | STRING ID ASSIGN STRING_EXPR ENDLINE
+                | STRING ID ASSIGN string_opers ENDLINE
         '''
         p[0] = {TYPE: self.reserved[p[1]], ID: p[2], VALUE: p[4], OPERATION: ADD_NEW_VAR}
         print(f'var_decl {p[0]}', end="\n\n")
@@ -282,10 +308,21 @@ class Parser:
     def p_var_assign(self, p):
         '''
         var_assign : ID ASSIGN factor_n ENDLINE
-                    | ID ASSIGN STRING_EXPR ENDLINE
+                    | ID ASSIGN string_opers ENDLINE
         '''
         p[0] = {OPERATION: UPDATE, ID: p[1], VALUE: p[3]}
         print(f'var_assign {p[0]}', end="\n\n")
+
+    def p_string_opers(self, p):
+        '''
+        string_opers : string_opers PLUS STRING_EXPR
+                        | string_opers MINUS STRING_EXPR
+                        | STRING_EXPR
+        '''
+        if len(p) == 2:
+            p[0] = [{OPERATION:FIRST, VALUE:p[1]}]
+        else:
+            p[0] = p[1] + [{OPERATION:p[2], VALUE:p[3]}]
 
     def p_type(self, p):
         '''

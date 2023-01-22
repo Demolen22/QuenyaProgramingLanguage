@@ -1,5 +1,5 @@
 talma esse
-tema str1 : {ale ma kota!};
+tema str1 : {ale ma kota!} + {hello world};
 iluve a : 0;
 @a : {ala nie ma kotu :((};
 lanca
