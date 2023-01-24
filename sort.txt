@@ -1,0 +1,28 @@
+talma esse
+
+    hyalin iluve 10 tablica;
+
+    iluve i : 0;
+
+    yare (i < 10) esse
+        tablica[i] : (10-i);
+        tec(tablica[i]);
+        i : (i+1);
+    lanca
+
+    iluve check_again : 1;
+    yare (check_again) esse
+        check_again : 0;
+        i : 0;
+        yare (i < 9) esse
+            lav (tablica[i] > tablica[(i+1)]) san
+                check_again : 1;
+                iluve a : tablica[(i+1)];
+                tablica[(i+1)] : tablica[i];
+                tablica[i] : a;
+            lanca
+            i : (i+1);
+        lanca
+    lanca
+
+lanca

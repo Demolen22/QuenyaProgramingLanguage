@@ -1,0 +1,13 @@
+talma esse
+
+    iluve a : 1;
+
+    tulca test (iluve a) esse
+        a : (a+4);
+        entulesse a
+
+    iluve result : test(2);
+    tec(a);
+    tec(result);
+
+lanca

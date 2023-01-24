@@ -25,6 +25,7 @@ FUNC_CALL = "func_call"
 FUNC_DECL = "func_decl"
 TABLE_DECL = "table_decl"
 TABLE_ASSIGN = "table_assign"
+TABLE_READ = "table_read"
 SIZE = "size"
 INDEX = "index"
 
@@ -155,9 +156,16 @@ class Parser:
                 elif event[OPERATION] == PRINT:
                     print(f"OUTPUT: {self._arithmetic_interpreter(event[VALUE], scope_dict)}")
                 elif event[OPERATION] == TABLE_DECL:
-                    scope_dict[event[ID]] = {TYPE: event[TYPE], SIZE: event[SIZE], VALUE: [None] * event[SIZE]}
+                    scope_dict[event[ID]] = {TYPE: event[TYPE], SIZE: event[SIZE], VALUE: [0] * event[SIZE]}
+                # elif event[OPERATION] == TABLE_ASSIGN:
+                #     scope_dict[event[ID]][] = self._arithmetic_interpreter(event[ID], scope_dict)
                 elif event[OPERATION] == TABLE_ASSIGN:
-                    self._arithmetic_interpreter(event, scope_dict)
+                    index = self._arithmetic_interpreter(event[INDEX], scope_dict)
+                    if scope_dict.get(event[ID]) is None:
+                        print(f"TABLE NOT DECLARED {event[ID]}")
+                        raise Exception
+                    if scope_dict[event[ID]][SIZE] > index:
+                        scope_dict[event[ID]][VALUE][index] = self._arithmetic_interpreter(event[VALUE], scope_dict)
         print("scope dict ", scope_dict)
 
     def _str_interpreter(self, value, scope_dict):
@@ -209,12 +217,22 @@ class Parser:
             elif value[OPERATION] == FUNC_CALL:
                 print(self._call_function(value[ID], value[ARGS], scope_dict))
                 return self._call_function(value[ID], value[ARGS], scope_dict)
-            elif value[OPERATION] == TABLE_ASSIGN:
+            # elif value[OPERATION] == TABLE_ASSIGN:
+            #     value_index = self._arithmetic_interpreter(value[INDEX], scope_dict)
+            #     if scope_dict.get(value[ID]) is None:
+            #         print(f"TABLE NOT DECLARED {value[ID]}")
+            #         raise Exception
+            #     if scope_dict[value[ID]][SIZE] > value_index:
+            #         print("assinging value to tab", scope_dict[value[ID]][VALUE])
+            #         scope_dict[value[ID]][VALUE][value_index] = value[VALUE]
+            #         print(scope_dict[value[ID]][VALUE])
+            elif value[OPERATION] == TABLE_READ:
                 value_index = self._arithmetic_interpreter(value[INDEX], scope_dict)
+                if scope_dict.get(value[ID]) is None:
+                    print(f"TABLE NOT DECLARED {value[ID]}")
+                    raise Exception
                 if scope_dict[value[ID]][SIZE] > value_index:
-                    print("assinging value to tab", scope_dict[value[ID]][VALUE])
-                    scope_dict[value[ID]][VALUE][value_index] = value[VALUE]
-                    print(scope_dict[value[ID]][VALUE])
+                    return scope_dict[value[ID]][VALUE][value_index]
             else:
                 return self._arithmetic_interpreter(value[VALUE], scope_dict)
         elif type(value) == str:
@@ -283,6 +301,12 @@ class Parser:
         '''
         p[0] = {OPERATION: TABLE_ASSIGN, ID: p[1], VALUE: p[6], INDEX: p[3]}
         print(f'table assign idx {p[1]} with value {p[5]}')
+
+    def p_table_read(self, p):
+        '''
+        table_read : ID OPEN_SQ_BRACKET factor_n CLOSE_SQ_BRACKET
+        '''
+        p[0] = {OPERATION: TABLE_READ, ID: p[1], INDEX: p[3]}
 
     def p_func_decl(self, p):
         '''
@@ -436,6 +460,7 @@ class Parser:
                  | NUMBER
                  | brac_expr
                  | func_call
+                 | table_read
         '''
         p[0] = p[1]
         print(f'p_factor {p[0]}', end="\n\n")

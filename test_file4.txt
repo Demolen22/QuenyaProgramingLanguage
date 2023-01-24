@@ -9,4 +9,5 @@ u : (u+1);
 lanca
 entulesse u
 iluve result : sum(3 2);
+tec(result);
 lanca
